@@ -1,7 +1,3 @@
-package hk.edu.polyu.comp.comp2411.project.user;
-
-import hk.edu.polyu.comp.comp2411.project.user.User;
-
 public class UserAccountManager {
 
     private User user;
@@ -10,11 +6,12 @@ public class UserAccountManager {
         this.user = user;
     }
 
-    public void updateUserInformation(String newUsername, String newPassword, String newEmail, String newAddress) {
+    public void updateUserInformation(String newUsername, String newPassword, String newEmail, String newAddress, String newType) {
         user.setUsername(newUsername);
         user.setPassword(newPassword);
         user.setEmail(newEmail);
         user.setAddress(newAddress);
+        user.setType(newType);
     }
 
     public void deactivateAccount() {
@@ -22,5 +19,6 @@ public class UserAccountManager {
         user.setPassword("");
         user.setEmail("");
         user.setAddress("");
+        user.setType("");
     }
 }

@@ -1,5 +1,3 @@
-package hk.edu.polyu.comp.comp2411.project.user;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.nio.charset.StandardCharsets;
@@ -17,11 +15,14 @@ public class User {
     private String email;
     private String address;
 
-    public User(String username, String password, String email, String address) {
+    private String type;
+
+    public User(String username, String password, String email, String address,String type) {
         this.username = username;
         this.setPassword(password);
         this.setEmail(email);
         this.address = address;
+        this.type = type;
     }
 
     // Getter and Setter methods
@@ -87,83 +88,11 @@ public class User {
         return matcher.matches();
     }
 
-}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-
-class Main {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Please enter your username:");
-        String username = scanner.nextLine();
-
-        System.out.println("Please enter your password:");
-        String password = scanner.nextLine();
-
-        System.out.println("Please enter your email:");
-        String email = scanner.nextLine();
-
-        System.out.println("Please enter your address:");
-        String address = scanner.nextLine();
-
-        // Create a new User object
-        User user = new User(username, password, email, address);
-        // Create a UserAccountManager object
-        hk.edu.polyu.comp.comp2411.project.user.UserAccountManager manager = new hk.edu.polyu.comp.comp2411.project.user.UserAccountManager(user);
-        // Create a PasswordReset object
-        hk.edu.polyu.comp.comp2411.project.user.PasswordReset reset = new hk.edu.polyu.comp.comp2411.project.user.PasswordReset(user);
-
-        // Display the user account details
-        user.displayUserAccount();
-
-        System.out.println("Do you want to update the user account information? Please enter 'yes' or 'no':");
-        String update = scanner.nextLine();
-
-        // Update the user account information if the user inputs "yes"
-        if (update.equals("yes")) {
-            System.out.println("Please enter your new username:");
-            username = scanner.nextLine();
-
-            System.out.println("Please enter your new password:");
-            password = scanner.nextLine();
-
-            System.out.println("Please enter your new email:");
-            email = scanner.nextLine();
-
-            System.out.println("Please enter your new address:");
-            address = scanner.nextLine();
-
-            manager.updateUserInformation(username, password, email, address);
-
-            // Display the updated user account details
-            user.displayUserAccount();
-        }
-
-        System.out.println("Do you want to reset the password? Please enter 'yes' or 'no':");
-        String resetPassword = scanner.nextLine();
-
-        // Reset the password if the user inputs "yes"
-        if (resetPassword.equals("yes")) {
-            System.out.println("Please enter the new password:");
-            String newPassword = scanner.nextLine();
-
-            reset.resetPassword(newPassword);
-
-            // Display the user account details
-            user.displayUserAccount();
-        }
-
-        System.out.println("Do you want to deactivate the account? Please enter 'yes' or 'no':");
-        String deactivate = scanner.nextLine();
-
-        // Deactivate the account if the user inputs "yes"
-        if (deactivate.equals("yes")) {
-            manager.deactivateAccount();
-
-            // Display the user account details
-            user.displayUserAccount();
-        }
-
-        scanner.close();
+    public String getType() {
+        return type;
     }
 }

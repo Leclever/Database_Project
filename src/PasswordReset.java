@@ -1,7 +1,3 @@
-package hk.edu.polyu.comp.comp2411.project.user;
-
-import hk.edu.polyu.comp.comp2411.project.user.User;
-
 public class PasswordReset {
     private User user;
 
