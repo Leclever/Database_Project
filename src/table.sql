@@ -95,10 +95,4 @@ CREATE TABLE Purchase(
     FOREIGN KEY(merchant_ID) REFERENCES Merchant(merchant_ID)
 );
 
-CREATE TABLE Communicate(
-    merchant_ID INTEGER,
-    customer_ID INTEGER,
-    assistant VARCHAR(255),
-    FOREIGN KEY(merchant_ID) REFERENCES Merchant(merchant_ID),
-    FOREIGN KEY(customer_ID) REFERENCES Customer(customer_ID)
-);
+
