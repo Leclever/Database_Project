@@ -20,7 +20,8 @@ CREATE TABLE Product(
     merchant_ID INTEGER,
     brand VARCHAR(255),
     inventory INTEGER,
-    FOREIGN KEY(merchant_ID) REFERENCES Merchant(merchant_ID)
+    FOREIGN KEY(merchant_ID) REFERENCES Merchant(merchant_ID),
+    sales INTEGER
 );
 
 CREATE TABLE shopping_cart(
@@ -68,7 +69,8 @@ CREATE TABLE report(
     FOREIGN KEY(product_NO) REFERENCES Product(product_NO),
     FOREIGN KEY(unit_price) REFERENCES Product(unit_price),
     FOREIGN KEY(brand) REFERENCES Product(brand),
-    FOREIGN KEY(inventory) REFERENCES Product(inventory)
+    FOREIGN KEY(inventory) REFERENCES Product(inventory),
+    FOREIGN KEY(sales) REFERENCES Product(sales)
 
 );
 
