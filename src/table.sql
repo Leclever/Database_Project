@@ -8,7 +8,8 @@ CREATE TABLE Customer (
 
 CREATE TABLE Merchant(
     merchant_ID INTEGER PRIMARY KEY,
-    merchant_name VARCHAR(255)
+    merchant_name VARCHAR(255),
+    FOREIGN KEY(product_NO) REFERENCES Product(product_NO)
 );
 
 CREATE TABLE Product(
