@@ -109,7 +109,74 @@ public class Application1 {
 
                     break;
                 case "2":
+                    // Search product
+                    System.out.println("Please select an option:");
+                    System.out.println("1. Display all products");
+                    System.out.println("2. Search for a product");
+                    System.out.println("3. Filter products by price");
 
+                    String option = scanner.nextLine();
+                    try {
+                        switch (option) {
+                            case "1":
+                                // Display all products
+                                statement = conn.createStatement();
+                                String allProductsQuery = "SELECT Product.*, Merchant.merchant_name FROM Product JOIN Merchant ON Product.merchant_ID = Merchant.merchant_ID";
+                                ResultSet allProductsResultSet = statement.executeQuery(allProductsQuery);
+                                while (allProductsResultSet.next()) {
+                                    System.out.println("Product Name: " + allProductsResultSet.getString("product_name"));
+                                    System.out.println("Price: " + allProductsResultSet.getDouble("unit_price"));
+                                    System.out.println("Merchant Name: " + allProductsResultSet.getString("merchant_name"));
+                                    System.out.println("---------------------");
+                                }
+                                allProductsResultSet.close();
+                                statement.close();
+                                break;
+
+                            case "2":
+                                // Search for a product
+                                System.out.println("Enter the product name:");
+                                String productName = scanner.nextLine();
+                                statement = conn.createStatement();
+                                String searchQuery = "SELECT Product.*, Merchant.merchant_name FROM Product JOIN Merchant ON Product.merchant_ID = Merchant.merchant_ID WHERE Product.product_name LIKE '%" + productName + "%'";
+                                ResultSet searchResultSet = statement.executeQuery(searchQuery);
+                                while (searchResultSet.next()) {
+                                    System.out.println("Product Name: " + searchResultSet.getString("product_name"));
+                                    System.out.println("Price: " + searchResultSet.getDouble("unit_price"));
+                                    System.out.println("Merchant Name: " + searchResultSet.getString("merchant_name"));
+                                    System.out.println("---------------------");
+                                }
+                                searchResultSet.close();
+                                statement.close();
+                                break;
+
+                            case "3":
+                                // Filter products by price
+                                System.out.println("Enter the maximum price:");
+                                double maxPrice = scanner.nextDouble();
+                                scanner.nextLine(); // consume newline left-over
+                                statement = conn.createStatement();
+                                String filterQuery = "SELECT Product.*, Merchant.merchant_name FROM Product JOIN Merchant ON Product.merchant_ID = Merchant.merchant_ID WHERE Product.unit_price <= " + maxPrice;
+                                ResultSet filterResultSet = statement.executeQuery(filterQuery);
+                                while (filterResultSet.next()) {
+                                    System.out.println("Product Name: " + filterResultSet.getString("product_name"));
+                                    System.out.println("Price: " + filterResultSet.getDouble("unit_price"));
+                                    System.out.println("Merchant Name: " + filterResultSet.getString("merchant_name"));
+                                    System.out.println("---------------------");
+                                }
+                                filterResultSet.close();
+                                statement.close();
+                                break;
+
+                            // Add more cases here for more options
+
+                            default:
+                                System.out.println("Invalid option. Please try again.");
+                                break;
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case "3":
 
