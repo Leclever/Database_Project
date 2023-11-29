@@ -6,6 +6,7 @@ import oracle.jdbc.OracleConnection;
 import oracle.jdbc.driver.OracleDriver;
 
 public class Application {
+    int userID;
     public static void main(String[] args) throws Exception {
         Application application = new Application();
         //initiation of the system
@@ -93,6 +94,12 @@ public class Application {
         while (typeName.next()) {
             userType = typeName.getString("type");
         }
+        Statement IDsearch = conn.createStatement();
+        String searchID = "SELECT type FROM users WHERE username = " + userName;
+        ResultSet cus_id = IDsearch.executeQuery(searchID);
+        while (typeName.next()) {
+            application.userID = cus_id.getInt("customer_ID");
+        }
         boolean cart_flag = false;
         while (!quit){
             application.menu();
@@ -108,6 +115,7 @@ public class Application {
                         String cart_command = application.input_detection();
                         switch (cart_command){
                             case "1":
+                                
                                 break;
                             case "2":
                                 break;
@@ -117,8 +125,7 @@ public class Application {
                                 break;
                             case "5":
                                 PreparedStatement statement = conn.prepareStatement("INSERT INTO shopping_cart(customer_ID,product_NO,product_name,unit_price,quantity) VALUES (?,?,?,?,?)");
-                                Scanner customer_ID = new Scanner(System.in);
-                                int cus_ID = customer_ID.nextInt();
+
                                 break;
                             case "back":
                                 cart_flag = true;
@@ -183,6 +190,57 @@ public class Application {
         System.out.println("[4] Inventory management (only for merchant and administrator accounts)");
         System.out.println("[5] Report and analytics (only for administrator accounts)");
         System.out.println("enter 'quit' to quit the whole system");
+    }
+
+    public void insertValue(OracleConnection conn) throws SQLException {
+
+        String selectQuery = "CREATE TABLE combinedTable AS" +
+                "SELECT o.order_NO, c.customer_ID, c.customer_name, o.date, p.product_NO, p.product_name, o.quantity, o.unit_price, c.address, c.payment, p.merchant_name, p.category, p.brand, p.inventory, p.sales" +
+                "FROM `Order` o" +
+                "JOIN Customer c ON o.customer_ID = c.customer_ID" +
+                "JOIN Product p ON o.product_NO = p.product_NO" +
+                "JOIN Shopping_cart sc ON c.customer_ID = sc.customer_ID AND p.product_NO = sc.product_NO" +
+                "JOIN Merchant m ON p.merchant_name = m.merchant_name" +
+                "JOIN Report r ON c.customer_ID = r.customer_ID AND p.product_NO = r.product_NO;";
+
+        PreparedStatement selectStatement = conn.prepareStatement(selectQuery);
+        ResultSet resultSet = selectStatement.executeQuery();
+        String select_cart = "SELECT customer_ID, product_NO, product_name, unit_price, quantity \n"+
+                "FROM combinedTable"+
+                "WHERE customer_ID = " +userID;
+        PreparedStatement select_for_cart = conn.prepareStatement(select_cart);
+        ResultSet cart_record = select_for_cart.executeQuery();
+
+        while (cart_record.next()) {
+            // 从结果集中获取每个属性的值
+            int customerId = resultSet.getInt("customer_ID");
+            String productNo = resultSet.getString("product_NO");
+            String productName = resultSet.getString("product_name");
+            float unitPrice = resultSet.getFloat("unit_price");
+            int quantity = resultSet.getInt("quantity");
+
+            // 进行进一步的处理，比如输出到控制台或执行其他逻辑
+
+            // 将获取到的值插入到数据库中的另一张表或同一张表的其他记录
+            // 创建插入语句
+            String insertQuery = "INSERT INTO shopping_cart(customer_ID, product_NO, product_name, unit_price, quantity) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement insertStatement = conn.prepareStatement(insertQuery);
+
+            // 设置每个属性的参数
+            insertStatement.setInt(1, customerId);
+            insertStatement.setString(2, productNo);
+            insertStatement.setString(3, productName);
+            insertStatement.setFloat(4, unitPrice);
+            insertStatement.setInt(5, quantity);
+
+            // 执行插入操作
+            insertStatement.executeUpdate();
+        }
+
+        String insertQuery = "INSERT INTO shopping_cart(customer_ID, product_NO, product_name, unit_price, quantity) VALUES (?, ?, ?, ?, ?)";
+
+        resultSet.close();
+        selectStatement.close();
     }
 }
 class cart{
