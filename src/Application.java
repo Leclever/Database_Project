@@ -115,7 +115,6 @@ public class Application {
                         String cart_command = application.input_detection();
                         switch (cart_command){
                             case "1":
-                                
                                 break;
                             case "2":
                                 break;
