@@ -1,5 +1,4 @@
-package hk.edu.polyu.comp.comp2411.project.Application;
-
+import java.util.Objects;
 import java.util.Scanner;
 import java.sql.*;
 
@@ -8,6 +7,8 @@ import oracle.jdbc.driver.OracleDriver;
 
 public class Application {
     public static void main(String[] args) throws Exception {
+        Application application = new Application();
+        //initiation of the system
         // Access to server
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter your username: ");
@@ -25,12 +26,13 @@ public class Application {
         String name = "";
         String type = "";
         boolean matched;
-
+        String command;
+        String userName = "";
         do {
             System.out.print("Enter \"l\" for Login or \"r\" for Register: ");
             in = scanner.nextLine();
             matched = in.equalsIgnoreCase("l") || in.equalsIgnoreCase("r");
-            
+
             // User register
             if (in.equalsIgnoreCase("r")) {
                 PreparedStatement nameCheck = conn.prepareStatement("SELECT * FROM users WHERE username = ?");
@@ -76,42 +78,151 @@ public class Application {
                     userLogin.setString(2, pwd);
                     ResultSet rSet = userLogin.executeQuery();
                     matched = rSet.next();
-                    if (matched) System.out.println("Login successfully!");
-                    else System.out.println("Username and password not matched. Please try again.\n");
+                    if (matched) {
+                        System.out.println("Login successfully!");
+                        userName = name;
+                    } else System.out.println("Username and password not matched. Please try again.\n");
                 } while (!matched);
             } else System.out.println("\nWrong input! Please try again.\n");
         } while (!matched);
         // After user successful login or registration, the main application loop starts
         boolean quit = false;
-        while (!quit) {
-            System.out.println("Please input the command:");
-            in = scanner.nextLine();
-            switch (in) {
-                case "1":
-                    System.out.println("Command 1 executed");
-                    // Add code for command 1
-                    break;
-                case "2":
-                    System.out.println("Command 2 executed");
-                    // Add code for command 2
-                    break;
-                case "3":
-                    System.out.println("Command 3 executed");
-                    // Add code for command 3
-                    break;
-                case "4":
-                    System.out.println("Command 4 executed");
-                    // Add code for command 4
-                    break;
-                case "q":
-                    quit = true;
-                    break;
-                default:
-                    System.out.println("Invalid command, please try again.");
-            }
+        Statement typeSearching = conn.createStatement();
+        String search_type = "SELECT type FROM users WHERE username = " + userName;
+        ResultSet typeName = typeSearching.executeQuery(search_type);
+        String userType = "";
+        while (typeName.next()) {
+            userType = typeName.getString("type");
         }
-        System.out.println("Thank you for using our system.");
-        // Close connection
-        conn.close();
+        switch (userType) {
+            case "customer":
+                while (!quit) {
+                    command = application.input_detection(application);
+                    switch (command) {
+                        case "1":
+                            System.out.println("Command 1 executed");
+                            // Add code for command 1
+                            break;
+                        case "2":
+                            System.out.println("Command 2 executed");
+                            // Add code for command 2
+                            break;
+                        case "3":
+                            System.out.println("Command 3 executed");
+                            // Add code for command 3
+                            break;
+                        case "4":
+                            System.out.println("Command 4 executed");
+                            // Add code for command 4
+                            break;
+                        case "quit":
+                            quit = true;
+                            break;
+                        default:
+                            System.out.println("no such function, try again please");
+                            break;
+                    }
+                }
+                System.out.println("Thank you for using our system.");
+                // Close connection
+                conn.close();
+                break;
+            case "merchant":
+                while (!quit) {
+                    command = application.input_detection(application);
+                    switch (command) {
+                        case "1":
+
+                            // Add code for command 1
+                            break;
+                        case "2":
+
+                            // Add code for command 2
+                            break;
+                        case "3":
+
+                            // Add code for command 3
+                            break;
+                        case "4":
+
+                            // Add code for command 4
+                            break;
+                        case "quit":
+                            quit = true;
+                            break;
+                        default:
+                            System.out.println("no such function, try again please");
+                            break;
+                    }
+                }
+                System.out.println("Thank you for using our system.");
+                // Close connection
+                conn.close();
+                break;
+            case "administrator":
+                while (!quit) {
+                    command = application.input_detection(application);
+                    switch (command) {
+                        case "1":
+
+                            // Add code for command 1
+                            break;
+                        case "2":
+
+                            // Add code for command 2
+                            break;
+                        case "3":
+
+                            // Add code for command 3
+                            break;
+                        case "4":
+
+                            // Add code for command 4
+                            break;
+                        case "5":
+                            break;
+                        case "6":
+                            break;
+                        case "quit":
+                            quit = true;
+                            break;
+                        default:
+                            System.out.println("no such function, try again please");
+                            break;
+                    }
+                }
+                System.out.println("Thank you for using our system.");
+                // Close connection
+                conn.close();
+                break;
+        }
     }
+        public String input_detection (Application main_program){
+            boolean flag = true;
+            String input = null;
+            while (flag) {
+                try {
+                    System.out.println("Please input the command:");
+                    Scanner sc = new Scanner(System.in);
+                    input = sc.nextLine();
+                    switch (input) {
+                        case "":
+                            System.out.println("the input cannot be empty");
+                            throw new IllegalArgumentException();
+                        case "quit":
+                            flag =false;
+                            return null;
+                        default:
+                            if (input.charAt(0)<'0' || input.charAt(0)>'9') {
+                                throw new IllegalArgumentException();
+                            }
+                    }
+                } catch (IllegalArgumentException e) {
+                    System.out.println("please try again");
+                }
+            }
+            return input;
+        }
+
 }
+
