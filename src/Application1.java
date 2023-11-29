@@ -228,16 +228,16 @@ public class Application1 {
                                 String ap = "SELECT address, payment FROM Customer WHERE customer_name = ?";
                                 PreparedStatement state = conn.prepareStatement(ap);
                                 state.setString(1, application.userName);
-                                ResultSet result = statement.executeQuery(ap);
+                                ResultSet result = state.executeQuery(ap);
                                 String address = null;
                                 String payment = null;
                                 if (resultSet.next()) {
-                                    address = resultSet.getString("address");
-                                    payment = resultSet.getString("payment");
+                                    address = result.getString("address");
+                                    payment = result.getString("payment");
                                 }
                                 String all = "SELECT * FROM shopping_cart";
                                 Statement st = conn.createStatement();
-                                ResultSet rs = statement.executeQuery(all);
+                                ResultSet rs = st.executeQuery(all);
                                 int customerID, productNO, quantity;
                                 float unitPrice, totalPrice;
                                 String productName;
@@ -267,6 +267,7 @@ public class Application1 {
                                         PreparedStatement deleteStatement = conn.prepareStatement(deleteQuery);
                                         deleteStatement.setString(1, pName);
                                         deleteStatement.executeUpdate();
+                                        System.out.println("the record has been delete successfully");
                                     } catch (SQLException e) {
                                         System.out.println("invalid input, try again");
                                         break;
@@ -277,10 +278,10 @@ public class Application1 {
                             case "4":
                                 boolean flag4 = true;
                                 while (flag4) {
-                                    try{
+                                    try {
                                         Scanner temp = new Scanner(System.in);
-                                        System.out.println("please enter the new value and the product_name that you want to change\n"+
-                                                "please enter by the order otherwise the input may be invalid"+
+                                        System.out.println("please enter the new value and the product_name that you want to change\n" +
+                                                "please enter by the order otherwise the input may be invalid" +
                                                 "only the quantity, total value");
                                         float required = temp.nextFloat();
                                         String pName = temp.next();
@@ -294,13 +295,14 @@ public class Application1 {
                                         while (rs1.next()) {
                                             up = rs1.getFloat("unit_price");
                                         }
-                                        totp = up*required;
+                                        totp = up * required;
                                         PreparedStatement updateStatement = conn.prepareStatement(updateQuery);
                                         updateStatement.setFloat(1, required);
                                         updateStatement.setFloat(2, totp);
-                                        updateStatement.setString(3,pName);
+                                        updateStatement.setString(3, pName);
                                         updateStatement.executeUpdate();
-                                    }catch (SQLException e){
+                                        System.out.println("the value has been updated successfully");
+                                    } catch (SQLException e) {
                                         System.out.println("invalid input, try again");
                                         break;
                                     }
@@ -311,18 +313,18 @@ public class Application1 {
                                 boolean flag5 = true;
                                 while (flag5) {
                                     try {
-                                        int customer_ID,product_NO,quant;
-                                        float unit_price,total_value;
+                                        int customer_ID, product_NO, quant;
+                                        float unit_price, total_value;
                                         String product_name;
-                                        System.out.println("please enter the customer_ID, product_NO, product_name, unit_price, quantity and split with space\n"+
+                                        System.out.println("please enter the customer_ID, product_NO, product_name, unit_price, quantity and split with space\n" +
                                                 "please follow the order or the input may be invalid");
                                         Scanner input = new Scanner(System.in);
-                                        customer_ID =input.nextInt();
+                                        customer_ID = input.nextInt();
                                         product_NO = input.nextInt();
                                         product_name = input.next();
                                         unit_price = input.nextFloat();
                                         quant = input.nextInt();
-                                        total_value = unit_price*quant;
+                                        total_value = unit_price * quant;
                                         String insertQuery = "INSERT INTO shopping_cart(customer_ID, product_NO, product_name, unit_price, quantity, total_value) VALUES (?, ?, ?, ?, ?, ?)";
                                         PreparedStatement insertStatement = conn.prepareStatement(insertQuery);
                                         insertStatement.setInt(1, customer_ID);
@@ -332,7 +334,8 @@ public class Application1 {
                                         insertStatement.setInt(5, quant);
                                         insertStatement.setFloat(6, total_value);
                                         insertStatement.executeUpdate();
-                                    }catch (SQLException e){
+                                        System.out.println("the record has been update successfully");
+                                    } catch (SQLException e) {
                                         System.out.println("invalid input, try again");
                                         break;
                                     }
@@ -340,12 +343,13 @@ public class Application1 {
                                 }
                                 break;
                             case "back":
-                                cart_flag =true;
+                                cart_flag = true;
                                 break;
                             default:
                                 System.out.println("no such function,please try again");
                                 break;
                         }
+                    }
                             case "4":
                                 System.out.println("Please enter the corresponding number:\n1. View the information of all product inventories\n2. View the inventory of a specific product\n3. Add products\n4. Delete products\n5. Update products' information");
                                 String input = scanner.nextLine();
@@ -504,8 +508,8 @@ public class Application1 {
                     }
                     System.out.println("Thank you for using our system.");
             }
-        }
-    }
+
+
     public String input_detection (){
         boolean flag = true;
         String input = null;
@@ -533,3 +537,6 @@ public class Application1 {
         return input;
     }
 }
+
+
+
