@@ -340,12 +340,11 @@ public class Application1 {
                                 }
                                 break;
                             case "back":
-                                cart_flag = true;
+                                cart_flag =true;
                                 break;
                             default:
                                 System.out.println("no such function,please try again");
                                 break;
-
                         }
                             case "4":
                                 System.out.println("Please enter the corresponding number:\n1. View the information of all product inventories\n2. View the inventory of a specific product\n3. Add products\n4. Delete products\n5. Update products' information");
