@@ -97,6 +97,7 @@ public class Application {
         switch (userType) {
             case "customer":
                 while (!quit) {
+                    application.menu(userType);
                     command = application.input_detection(application);
                     switch (command) {
                         case "1":
@@ -129,6 +130,7 @@ public class Application {
                 break;
             case "merchant":
                 while (!quit) {
+                    application.menu(userType);
                     command = application.input_detection(application);
                     switch (command) {
                         case "1":
@@ -161,6 +163,7 @@ public class Application {
                 break;
             case "administrator":
                 while (!quit) {
+                    application.menu(userType);
                     command = application.input_detection(application);
                     switch (command) {
                         case "1":
@@ -223,6 +226,22 @@ public class Application {
             }
             return input;
         }
-
+    public void menu(String userType){
+        switch (userType){
+            case "customer":
+                System.out.println("[1] change user information");
+                System.out.println("[2] check your order record");
+                System.out.println("[3] search product by name");
+                System.out.println("[4] search product by brand");
+                System.out.println("[5] search merchant by name");
+                break;
+            case "merchant":
+                System.out.println("[1] check the inventory level");
+                System.out.println("[2] check the order");
+                break;
+            case "administrator":
+                break;
+        }
+    }
 }
 
