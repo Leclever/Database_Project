@@ -37,7 +37,6 @@ public class Application {
             if (in.equalsIgnoreCase("r")) {
                 PreparedStatement nameCheck = conn.prepareStatement("SELECT * FROM users WHERE username = ?");
                 PreparedStatement userRegister = conn.prepareStatement("INSERT INTO users (username, password) VALUES (?, ?)");
-
                 boolean exists;
                 // Username input, if name already exists then try again
                 do {
@@ -94,113 +93,64 @@ public class Application {
         while (typeName.next()) {
             userType = typeName.getString("type");
         }
-        switch (userType) {
-            case "customer":
-                while (!quit) {
-                    application.menu(userType);
-                    command = application.input_detection(application);
-                    switch (command) {
-                        case "1":
-                            System.out.println("Command 1 executed");
-                            // Add code for command 1
-                            break;
-                        case "2":
-                            System.out.println("Command 2 executed");
-                            // Add code for command 2
-                            break;
-                        case "3":
-                            System.out.println("Command 3 executed");
-                            // Add code for command 3
-                            break;
-                        case "4":
-                            System.out.println("Command 4 executed");
-                            // Add code for command 4
-                            break;
-                        case "quit":
-                            quit = true;
-                            break;
-                        default:
-                            System.out.println("no such function, try again please");
-                            break;
+        boolean cart_flag = false;
+        while (!quit){
+            application.menu();
+            String command_code = application.input_detection();
+            switch (command_code){
+                case "1":
+                    break;
+                case "2":
+                    break;
+                case "3":
+                    while(!cart_flag){
+                        cart.cart_menu();
+                        String cart_command = application.input_detection();
+                        switch (cart_command){
+                            case "1":
+                                break;
+                            case "2":
+                                break;
+                            case "3":
+                                break;
+                            case "4":
+                                break;
+                            case "5":
+                                PreparedStatement statement = conn.prepareStatement("INSERT INTO shopping_cart(customer_ID,product_NO,product_name,unit_price,quantity) VALUES (?,?,?,?,?)");
+                                Scanner customer_ID = new Scanner(System.in);
+                                int cus_ID = customer_ID.nextInt();
+                                break;
+                            case "back":
+                                cart_flag = true;
+                                break;
+                            default:
+                                System.out.println("no such function,please try again");
+                                break;
+                        }
                     }
-                }
-                System.out.println("Thank you for using our system.");
-                // Close connection
-                conn.close();
-                break;
-            case "merchant":
-                while (!quit) {
-                    application.menu(userType);
-                    command = application.input_detection(application);
-                    switch (command) {
-                        case "1":
-
-                            // Add code for command 1
-                            break;
-                        case "2":
-
-                            // Add code for command 2
-                            break;
-                        case "3":
-
-                            // Add code for command 3
-                            break;
-                        case "4":
-
-                            // Add code for command 4
-                            break;
-                        case "quit":
-                            quit = true;
-                            break;
-                        default:
-                            System.out.println("no such function, try again please");
-                            break;
+                    break;
+                case "4":
+                    if (Objects.equals(userType, "customer")){
+                        System.out.println("user is not allowed to access this module");
+                        break;
                     }
-                }
-                System.out.println("Thank you for using our system.");
-                // Close connection
-                conn.close();
-                break;
-            case "administrator":
-                while (!quit) {
-                    application.menu(userType);
-                    command = application.input_detection(application);
-                    switch (command) {
-                        case "1":
-
-                            // Add code for command 1
-                            break;
-                        case "2":
-
-                            // Add code for command 2
-                            break;
-                        case "3":
-
-                            // Add code for command 3
-                            break;
-                        case "4":
-
-                            // Add code for command 4
-                            break;
-                        case "5":
-                            break;
-                        case "6":
-                            break;
-                        case "quit":
-                            quit = true;
-                            break;
-                        default:
-                            System.out.println("no such function, try again please");
-                            break;
+                    break;
+                case "5":
+                    if (!Objects.equals(userType, "administrator")){
+                        System.out.println("only administrator can access this module");
+                        break;
                     }
-                }
-                System.out.println("Thank you for using our system.");
-                // Close connection
-                conn.close();
-                break;
+                    break;
+                case "quit":
+                    quit = true;
+                    break;
+            }
+
         }
+        System.out.println("Thank you for using the OSS system by Group 7");
+        conn.close();
     }
-        public String input_detection (Application main_program){
+        public String input_detection (){
             boolean flag = true;
             String input = null;
             while (flag) {
@@ -214,7 +164,7 @@ public class Application {
                             throw new IllegalArgumentException();
                         case "quit":
                             flag =false;
-                            return null;
+                            break;
                         default:
                             if (input.charAt(0)<'0' || input.charAt(0)>'9') {
                                 throw new IllegalArgumentException();
@@ -226,22 +176,25 @@ public class Application {
             }
             return input;
         }
-    public void menu(String userType){
-        switch (userType){
-            case "customer":
-                System.out.println("[1] change user information");
-                System.out.println("[2] check your order record");
-                System.out.println("[3] search product by name");
-                System.out.println("[4] search product by brand");
-                System.out.println("[5] search merchant by name");
-                break;
-            case "merchant":
-                System.out.println("[1] check the inventory level");
-                System.out.println("[2] check the order");
-                break;
-            case "administrator":
-                break;
-        }
+    public void menu(){
+        System.out.println("[1] Account management");
+        System.out.println("[2] Product listing and search");
+        System.out.println("[3] Shopping cart and check out");
+        System.out.println("[4] Inventory management (only for merchant and administrator accounts)");
+        System.out.println("[5] Report and analytics (only for administrator accounts)");
+        System.out.println("enter 'quit' to quit the whole system");
     }
+}
+class cart{
+    public static void cart_menu(){
+        System.out.println("please choose the function you need:");
+        System.out.println("[1] check all the products in the cart");
+        System.out.println("[2] check out");
+        System.out.println("[3] remove a product in the cart");
+        System.out.println("[4] change the number of item in the cart");
+        System.out.println("[5] insert a product into the cart");
+        System.out.println("enter 'back' to back to the last page");
+    }
+
 }
 
