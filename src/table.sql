@@ -16,10 +16,10 @@ CREATE TABLE Product(
     product_NO INTEGER PRIMARY KEY,
     product_name VARCHAR(255),
     unit_price FLOAT,
-    category INTEGER,
+    category VARCHAR(255) ,
     merchant_ID INTEGER,
     brand VARCHAR(255),
-    inventory INTEGER,
+    stock_level INTEGER,
     FOREIGN KEY(merchant_ID) REFERENCES Merchant(merchant_ID),
     sales INTEGER
 );
