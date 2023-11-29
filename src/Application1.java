@@ -5,6 +5,8 @@ import oracle.jdbc.OracleConnection;
 import oracle.jdbc.driver.OracleDriver;
 
 public class Application1 {
+    String userName;
+    int userId;
 
     public static void main(String[] args) throws Exception {
         Application1 application = new Application1();
@@ -91,6 +93,7 @@ public class Application1 {
                         matched = true;
                         type = rSet.getString(3);
                         System.out.println("Login successfully!");
+                        application.userName = name;
                     } else {
                         matched = false;
                         System.out.println("Username and password not matched. Please try again.\n");
@@ -214,6 +217,44 @@ public class Application1 {
                                 }
                                 break;
                             case "2":
+                                String sum = "SELECT SUM(total_price) AS overall_price FROM shopping_cart";
+                                Statement statement = conn.createStatement();
+                                ResultSet resultSet = statement.executeQuery(sum);
+                                float overallPrice;
+                                if (resultSet.next()) {
+                                    overallPrice = resultSet.getFloat("overall_price");
+                                    System.out.println("Overall Price: " + overallPrice);
+                                }
+                                String ap = "SELECT address, payment FROM Customer WHERE customer_name = ?";
+                                PreparedStatement state = conn.prepareStatement(ap);
+                                state.setString(1, application.userName);
+                                ResultSet result = statement.executeQuery(ap);
+                                String address = null;
+                                String payment = null;
+                                if (resultSet.next()) {
+                                    address = resultSet.getString("address");
+                                    payment = resultSet.getString("payment");
+                                }
+                                String all = "SELECT * FROM shopping_cart";
+                                Statement st = conn.createStatement();
+                                ResultSet rs = statement.executeQuery(all);
+                                int customerID, productNO, quantity;
+                                float unitPrice, totalPrice;
+                                String productName;
+                                while (rs.next()) {
+                                    customerID = rs.getInt("customer_ID");
+                                    productNO = rs.getInt("product_NO");
+                                    productName = rs.getString("product_name");
+                                    unitPrice = rs.getFloat("unit_price");
+                                    quantity = rs.getInt("quantity");
+                                    totalPrice = rs.getFloat("total_price");
+
+                                    System.out.println(customerID + " " + productNO + " " + productName + " " + unitPrice +
+                                            " " + quantity + " " + totalPrice);
+                                }
+                                System.out.println("the customer name is: " + application.userName);
+                                System.out.println("the payment is: " + payment);
+                                System.out.println("the address is: " + address);
                                 break;
                             case "3":
                                 boolean flag3 = true;
@@ -233,6 +274,79 @@ public class Application1 {
                                     flag3 = false;
                                 }
                                 break;
+                            case "4":
+                                boolean flag4 = true;
+                                while (flag4) {
+                                    try{
+                                        Scanner temp = new Scanner(System.in);
+                                        System.out.println("please enter the new value and the product_name that you want to change\n"+
+                                                "please enter by the order otherwise the input may be invalid"+
+                                                "only the quantity, total value");
+                                        float required = temp.nextFloat();
+                                        String pName = temp.next();
+                                        float totp;
+                                        String updateQuery = "UPDATE shopping_cart SET quantity = ?,total_price = ? WHERE product_name = ?";
+                                        String unitp = "SELECT unit_price FROM shopping_cart WHERE product_name = ?";
+                                        PreparedStatement st1 = conn.prepareStatement(unitp);
+                                        st1.setString(1, pName);
+                                        ResultSet rs1 = st1.executeQuery();
+                                        float up = 0;
+                                        while (rs1.next()) {
+                                            up = rs1.getFloat("unit_price");
+                                        }
+                                        totp = up*required;
+                                        PreparedStatement updateStatement = conn.prepareStatement(updateQuery);
+                                        updateStatement.setFloat(1, required);
+                                        updateStatement.setFloat(2, totp);
+                                        updateStatement.setString(3,pName);
+                                        updateStatement.executeUpdate();
+                                    }catch (SQLException e){
+                                        System.out.println("invalid input, try again");
+                                        break;
+                                    }
+                                    flag4 = false;
+                                }
+                                break;
+                            case "5":
+                                boolean flag5 = true;
+                                while (flag5) {
+                                    try {
+                                        int customer_ID,product_NO,quant;
+                                        float unit_price,total_value;
+                                        String product_name;
+                                        System.out.println("please enter the customer_ID, product_NO, product_name, unit_price, quantity and split with space\n"+
+                                                "please follow the order or the input may be invalid");
+                                        Scanner input = new Scanner(System.in);
+                                        customer_ID =input.nextInt();
+                                        product_NO = input.nextInt();
+                                        product_name = input.next();
+                                        unit_price = input.nextFloat();
+                                        quant = input.nextInt();
+                                        total_value = unit_price*quant;
+                                        String insertQuery = "INSERT INTO shopping_cart(customer_ID, product_NO, product_name, unit_price, quantity, total_value) VALUES (?, ?, ?, ?, ?, ?)";
+                                        PreparedStatement insertStatement = conn.prepareStatement(insertQuery);
+                                        insertStatement.setInt(1, customer_ID);
+                                        insertStatement.setInt(2, product_NO);
+                                        insertStatement.setString(3, product_name);
+                                        insertStatement.setFloat(4, unit_price);
+                                        insertStatement.setInt(5, quant);
+                                        insertStatement.setFloat(6, total_value);
+                                        insertStatement.executeUpdate();
+                                    }catch (SQLException e){
+                                        System.out.println("invalid input, try again");
+                                        break;
+                                    }
+                                    flag5 = false;
+                                }
+                                break;
+                            case "back":
+                                cart_flag = true;
+                                break;
+                            default:
+                                System.out.println("no such function,please try again");
+                                break;
+
+                        }
                             case "4":
                                 System.out.println("Please enter the corresponding number:\n1. View the information of all product inventories\n2. View the inventory of a specific product\n3. Add products\n4. Delete products\n5. Update products' information");
                                 String input = scanner.nextLine();

@@ -111,7 +111,13 @@ public class Application {
                     break;
                 case "3":
                     while(!cart_flag){
-                        cart.cart_menu();
+                        System.out.println("please choose the function you need:");
+                        System.out.println("[1] check all the products in the cart");
+                        System.out.println("[2] check out");
+                        System.out.println("[3] remove a product in the cart");
+                        System.out.println("[4] change the number of item in the cart");
+                        System.out.println("[5] insert a product into the cart");
+                        System.out.println("enter 'back' to back to the last page");
                         String cart_command = application.input_detection();
                         switch (cart_command) {
                             case "1":
@@ -278,16 +284,5 @@ public class Application {
         System.out.println("enter 'quit' to quit the whole system");
     }
 }
-class cart{
-    public static void cart_menu(){
-        System.out.println("please choose the function you need:");
-        System.out.println("[1] check all the products in the cart");
-        System.out.println("[2] check out");
-        System.out.println("[3] remove a product in the cart");
-        System.out.println("[4] change the number of item in the cart");
-        System.out.println("[5] insert a product into the cart");
-        System.out.println("enter 'back' to back to the last page");
-    }
 
-}
 
