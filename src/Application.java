@@ -113,18 +113,105 @@ public class Application {
                     while(!cart_flag){
                         cart.cart_menu();
                         String cart_command = application.input_detection();
-                        switch (cart_command){
+                        switch (cart_command) {
                             case "1":
+                                boolean flag1 = true;
+                                while (flag1) {
+                                    try {
+                                        String query = "SELECT * FROM shopping_cart";
+                                        Statement statement = conn.createStatement();
+                                        ResultSet resultSet = statement.executeQuery(query);
+                                        while (resultSet.next()) {
+                                            int customerID = resultSet.getInt("customer_ID");
+                                            int productNO = resultSet.getInt("product_NO");
+                                            String productName = resultSet.getString("product_name");
+                                            float unit_price = resultSet.getFloat("unit_price");
+                                            int quantity = resultSet.getInt("quantity");
+                                            float total_price = resultSet.getFloat("total_price");
+                                            System.out.println(customerID+" "+productNO+" "+productName+" "+unit_price+" "+quantity+" "+total_price);
+                                        }
+                                    }catch (SQLException e){
+                                        System.out.println("invalid input, try again");
+                                        break;
+                                    }
+                                    flag1 = false;
+                                }
                                 break;
                             case "2":
                                 break;
                             case "3":
+                                boolean flag3 = true;
+                                while (flag3) {
+                                    try {
+                                        Scanner input3 = new Scanner(System.in);
+                                        System.out.println("please input the name of the product you want to delete:");
+                                        String pName = input3.next();
+                                        String deleteQuery = "DELETE FROM shopping_cart WHERE product_name = ?";
+                                        PreparedStatement deleteStatement = conn.prepareStatement(deleteQuery);
+                                        deleteStatement.setString(1, pName);
+                                        deleteStatement.executeUpdate();
+                                    } catch (SQLException e) {
+                                        System.out.println("invalid input, try again");
+                                        break;
+                                    }
+                                    flag3 =false;
+                                }
                                 break;
                             case "4":
+                                boolean flag4 = true;
+                                while (flag4) {
+                                    try{
+                                        Scanner temp = new Scanner(System.in);
+                                        System.out.println("please enter the attribute, new value and the product_name that you want to change\n"+
+                                                "please enter by the order otherwise the input may be invalid"+
+                                                "only the quantity, total value");
+                                        String property = temp.next();
+                                        float required = temp.nextFloat();
+                                        String productName = temp.next();
+                                        String updateQuery = "UPDATE shopping_cart SET ? = ? WHERE product_name = ?";
+                                        PreparedStatement updateStatement = conn.prepareStatement(updateQuery);
+                                        updateStatement.setString(1, property);
+                                        updateStatement.setFloat(2, required);
+                                        updateStatement.setString(3, productName);
+                                        updateStatement.executeUpdate();
+                                    }catch (SQLException e){
+                                        System.out.println("invalid input, try again");
+                                        break;
+                                    }
+                                    flag4 = false;
+                                }
                                 break;
                             case "5":
-                                PreparedStatement statement = conn.prepareStatement("INSERT INTO shopping_cart(customer_ID,product_NO,product_name,unit_price,quantity) VALUES (?,?,?,?,?)");
-
+                                boolean flag5 = true;
+                                while (flag5) {
+                                    try {
+                                        int customer_ID,product_NO,quantity;
+                                        float unit_price,total_value;
+                                        String product_name;
+                                        System.out.println("please enter the customer_ID, product_NO, product_name, unit_price, quantity, total-value and split with space\n"+
+                                                "please follow the order or the input may be invalid");
+                                        Scanner input = new Scanner(System.in);
+                                        customer_ID =input.nextInt();
+                                        product_NO = input.nextInt();
+                                        product_name = input.next();
+                                        unit_price = input.nextFloat();
+                                        quantity = input.nextInt();
+                                        total_value = input.nextFloat();
+                                        String insertQuery = "INSERT INTO shopping_cart(customer_ID, product_NO, product_name, unit_price, quantity, total_value) VALUES (?, ?, ?, ?, ?, ?)";
+                                        PreparedStatement insertStatement = conn.prepareStatement(insertQuery);
+                                        insertStatement.setInt(1, customer_ID);
+                                        insertStatement.setInt(2, product_NO);
+                                        insertStatement.setString(3, product_name);
+                                        insertStatement.setFloat(4, unit_price);
+                                        insertStatement.setInt(5, quantity);
+                                        insertStatement.setFloat(6, total_value);
+                                        insertStatement.executeUpdate();
+                                    }catch (SQLException e){
+                                        System.out.println("invalid input, try again");
+                                        break;
+                                    }
+                                    flag5 = false;
+                                }
                                 break;
                             case "back":
                                 cart_flag = true;
@@ -189,57 +276,6 @@ public class Application {
         System.out.println("[4] Inventory management (only for merchant and administrator accounts)");
         System.out.println("[5] Report and analytics (only for administrator accounts)");
         System.out.println("enter 'quit' to quit the whole system");
-    }
-
-    public void insertValue(OracleConnection conn) throws SQLException {
-
-        String selectQuery = "CREATE TABLE combinedTable AS" +
-                "SELECT o.order_NO, c.customer_ID, c.customer_name, o.date, p.product_NO, p.product_name, o.quantity, o.unit_price, c.address, c.payment, p.merchant_name, p.category, p.brand, p.inventory, p.sales" +
-                "FROM `Order` o" +
-                "JOIN Customer c ON o.customer_ID = c.customer_ID" +
-                "JOIN Product p ON o.product_NO = p.product_NO" +
-                "JOIN Shopping_cart sc ON c.customer_ID = sc.customer_ID AND p.product_NO = sc.product_NO" +
-                "JOIN Merchant m ON p.merchant_name = m.merchant_name" +
-                "JOIN Report r ON c.customer_ID = r.customer_ID AND p.product_NO = r.product_NO;";
-
-        PreparedStatement selectStatement = conn.prepareStatement(selectQuery);
-        ResultSet resultSet = selectStatement.executeQuery();
-        String select_cart = "SELECT customer_ID, product_NO, product_name, unit_price, quantity \n"+
-                "FROM combinedTable"+
-                "WHERE customer_ID = " +userID;
-        PreparedStatement select_for_cart = conn.prepareStatement(select_cart);
-        ResultSet cart_record = select_for_cart.executeQuery();
-
-        while (cart_record.next()) {
-            // 从结果集中获取每个属性的值
-            int customerId = resultSet.getInt("customer_ID");
-            String productNo = resultSet.getString("product_NO");
-            String productName = resultSet.getString("product_name");
-            float unitPrice = resultSet.getFloat("unit_price");
-            int quantity = resultSet.getInt("quantity");
-
-            // 进行进一步的处理，比如输出到控制台或执行其他逻辑
-
-            // 将获取到的值插入到数据库中的另一张表或同一张表的其他记录
-            // 创建插入语句
-            String insertQuery = "INSERT INTO shopping_cart(customer_ID, product_NO, product_name, unit_price, quantity) VALUES (?, ?, ?, ?, ?)";
-            PreparedStatement insertStatement = conn.prepareStatement(insertQuery);
-
-            // 设置每个属性的参数
-            insertStatement.setInt(1, customerId);
-            insertStatement.setString(2, productNo);
-            insertStatement.setString(3, productName);
-            insertStatement.setFloat(4, unitPrice);
-            insertStatement.setInt(5, quantity);
-
-            // 执行插入操作
-            insertStatement.executeUpdate();
-        }
-
-        String insertQuery = "INSERT INTO shopping_cart(customer_ID, product_NO, product_name, unit_price, quantity) VALUES (?, ?, ?, ?, ?)";
-
-        resultSet.close();
-        selectStatement.close();
     }
 }
 class cart{
