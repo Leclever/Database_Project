@@ -104,7 +104,7 @@ public class Application1 {
         // After user successful login or registration, the main application loop starts
         boolean quit = false;
         while (!quit) {
-            System.out.println("4. Inventory Management (Administrators Only)");
+            System.out.println("4. Inventory Management (Administrators Only)\n5. Analysis Report (Administrators Only) ");
             System.out.println("Please input the command:");
             in = scanner.nextLine();
             switch (in) {
@@ -350,164 +350,438 @@ public class Application1 {
                                 break;
                         }
                     }
-                            case "4":
-                                System.out.println("Please enter the corresponding number:\n1. View the information of all product inventories\n2. View the inventory of a specific product\n3. Add products\n4. Delete products\n5. Update products' information");
-                                String input = scanner.nextLine();
-                                switch (input) {
-                                    case "1":
-                                        try {
-                                            String sql = "SELECT product_NO, product_name, category, Price, brand, stock_level FROM Product;";
-                                            PreparedStatement viewallinventory = conn.prepareStatement(sql);
-                                            ResultSet rSet = viewallinventory.executeQuery();
-                                            System.out.println("product NO\t\tproduct name\t\tcategory\t\tPrice\t\tbrand\t\tstock level");
-                                            while (rSet.next()) {
-                                                int product_NO = rSet.getInt("product_NO");
-                                                String product_name = rSet.getString("product_name");
-                                                String category = rSet.getString("category");
-                                                float Price = rSet.getFloat("Price");
-                                                String brand = rSet.getString(" brand");
-                                                int stock_level = rSet.getInt("stock_level");
-                                                System.out.println(product_NO + "\t\t" + product_name + "\t\t" + category + "\t\t" + Price + "\t\t" + brand + "\t\t" + stock_level);
-                                            }
-                                        } catch (SQLException e) {
-                                            System.out.println(e);
-                                        }
-                                        break;
-                                    case "2":
-                                        System.out.println("Please enter the product NO of the product:");
+                case "4":
+                    System.out.println("Please enter the corresponding number:\n1. View the information of all product inventories\n2. View the inventory of a specific product\n3. Add products\n4. Delete products\n5. Update products' information");
+                    String input = scanner.nextLine();
+                    switch (input) {
+                        case "1":
+                            try {
+                                String sql = "SELECT product_NO, product_name, category, Price, brand, stock_level FROM Product;";
+                                PreparedStatement viewallinventory = conn.prepareStatement(sql);
+                                ResultSet rSet = viewallinventory.executeQuery();
+                                System.out.println("product NO\t\tproduct name\t\tcategory\t\tPrice\t\tbrand\t\tstock level");
+                                while (rSet.next()) {
+                                    int product_NO = rSet.getInt("product_NO");
+                                    String product_name = rSet.getString("product_name");
+                                    String category = rSet.getString("category");
+                                    float Price = rSet.getFloat("Price");
+                                    String brand = rSet.getString(" brand");
+                                    int stock_level = rSet.getInt("stock_level");
+                                    System.out.println(product_NO + "\t\t" + product_name + "\t\t" + category + "\t\t" + Price + "\t\t" + brand + "\t\t" + stock_level);
+                                }
+                            } catch (SQLException e) {
+                                System.out.println(e);
+                            }
+                            break;
+                        case "2":
+                            System.out.println("Please enter the product NO of the product:");
+                            input = scanner.nextLine();
+                            try {
+                                String sql = "SELECT product_NO, product_name, category, Price, brand, stock_level FROM Product WHERE product_NO = ?";
+                                PreparedStatement viewspecificinventory = conn.prepareStatement(sql);
+                                viewspecificinventory.setInt(1, Integer.parseInt(input));
+                                ResultSet rSet = viewspecificinventory.executeQuery();
+                                System.out.println("product NO\t\tproduct name\t\tcategory\t\tPrice\t\tbrand\t\tstock level");
+                                while (rSet.next()) {
+                                    int product_NO = rSet.getInt("product_NO");
+                                    String product_name = rSet.getString("product_name");
+                                    String category = rSet.getString("category");
+                                    float Price = rSet.getFloat("Price");
+                                    String brand = rSet.getString(" brand");
+                                    int stock_level = rSet.getInt("stock_level");
+                                    System.out.println(product_NO + "\t\t" + product_name + "\t\t" + category + "\t\t" + Price + "\t\t" + brand + "\t\t" + stock_level);
+                                }
+                            } catch (SQLException e) {
+                                System.out.println(e);
+                            }
+                            break;
+                        case "3":
+                            System.out.println("Please enter the new product information in format: product_name, unit_price, category, merchantID, brand, stock_level, sales");
+                            input = scanner.nextLine();
+                            try {
+                                String[] info = input.split(",");
+                                String sql = "INSERT INTO Product VALUES (NULL, ?, ?, ?, ?, ?, ?, ?);";
+                                PreparedStatement addproduct = conn.prepareStatement(sql);
+                                addproduct.setString(1, info[0]);
+                                addproduct.setFloat(2, Float.parseFloat(info[1]));
+                                addproduct.setString(3, info[2]);
+                                addproduct.setInt(4, Integer.parseInt(info[3]));
+                                addproduct.setString(5, info[4]);
+                                addproduct.setInt(6, Integer.parseInt(info[5]));
+                                addproduct.setInt(7, Integer.parseInt(info[6]));
+                                addproduct.executeUpdate();
+                                System.out.println("Add successfully!");
+                            } catch (SQLException e) {
+                                System.out.println(e);
+                            }
+                            break;
+                        case "4":
+                            System.out.println("Please enter the product NO of the product:");
+                            input = scanner.nextLine();
+                            try {
+                                String sql = "DELETE Product WHERE product_NO = ?";
+                                PreparedStatement deleteproduct = conn.prepareStatement(sql);
+                                deleteproduct.setInt(1, Integer.parseInt(input));
+                                deleteproduct.executeUpdate();
+                                System.out.println("Delete successfully!");
+                            } catch (SQLException e) {
+                                System.out.println(e);
+                            }
+                            break;
+                        case "5":
+                            System.out.println("Please enter the product NO of the product you want to update:");
+                            String NO = scanner.nextLine();
+                            System.out.println("Please enter the update information corresponding number:\n1. Product name \n2. Product unit price\n3. Product category \n4. Product stock level ");
+                            input = scanner.nextLine();
+                            switch (input) {
+                                case "1":
+                                    try {
+                                        System.out.println("Please enter the new name:");
                                         input = scanner.nextLine();
-                                        try {
-                                            String sql = "SELECT product_NO, product_name, category, Price, brand, stock_level FROM Product WHERE product_NO = ?";
-                                            PreparedStatement viewspecificinventory = conn.prepareStatement(sql);
-                                            viewspecificinventory.setInt(1, Integer.parseInt(input));
-                                            ResultSet rSet = viewspecificinventory.executeQuery();
-                                            System.out.println("product NO\t\tproduct name\t\tcategory\t\tPrice\t\tbrand\t\tstock level");
-                                            while (rSet.next()) {
-                                                int product_NO = rSet.getInt("product_NO");
-                                                String product_name = rSet.getString("product_name");
-                                                String category = rSet.getString("category");
-                                                float Price = rSet.getFloat("Price");
-                                                String brand = rSet.getString(" brand");
-                                                int stock_level = rSet.getInt("stock_level");
-                                                System.out.println(product_NO + "\t\t" + product_name + "\t\t" + category + "\t\t" + Price + "\t\t" + brand + "\t\t" + stock_level);
-                                            }
-                                        } catch (SQLException e) {
-                                            System.out.println(e);
-                                        }
-                                        break;
-                                    case "3":
-                                        System.out.println("Please enter the new product information in format: product_name, unit_price, category, merchantID, brand, stock_level, sales");
+                                        String sql = "UPDATE Product SET product_name = ? WHERE product_NO = ?;";
+                                        PreparedStatement updateproduct = conn.prepareStatement(sql);
+                                        updateproduct.setString(1, input);
+                                        updateproduct.setInt(2, Integer.parseInt(NO));
+                                        updateproduct.executeUpdate();
+                                        System.out.println("Update successfully!");
+                                    } catch (SQLException e) {
+                                        System.out.println(e);
+                                    }
+                                    break;
+                                case "2":
+                                    try {
+                                        System.out.println("Please enter the new price:");
                                         input = scanner.nextLine();
-                                        try {
-                                            String[] info = input.split(",");
-                                            String sql = "INSERT INTO Product VALUES (NULL, ?, ?, ?, ?, ?, ?, ?);";
-                                            PreparedStatement addproduct = conn.prepareStatement(sql);
-                                            addproduct.setString(1, info[0]);
-                                            addproduct.setFloat(2, Float.parseFloat(info[1]));
-                                            addproduct.setString(3, info[2]);
-                                            addproduct.setInt(4, Integer.parseInt(info[3]));
-                                            addproduct.setString(5, info[4]);
-                                            addproduct.setInt(6, Integer.parseInt(info[5]));
-                                            addproduct.setInt(7, Integer.parseInt(info[6]));
-                                            addproduct.executeUpdate();
-                                            System.out.println("Add successfully!");
-                                        } catch (SQLException e) {
-                                            System.out.println(e);
-                                        }
-                                        break;
-                                    case "4":
-                                        System.out.println("Please enter the product NO of the product:");
+                                        String sql = "UPDATE Product SET unit_price = ? WHERE product_NO = ?;";
+                                        PreparedStatement updateproduct = conn.prepareStatement(sql);
+                                        updateproduct.setFloat(1, Float.parseFloat(input));
+                                        updateproduct.setInt(2, Integer.parseInt(NO));
+                                        updateproduct.executeUpdate();
+                                        System.out.println("Update successfully!");
+                                    } catch (SQLException e) {
+                                        System.out.println(e);
+                                    }
+                                    break;
+                                case "3":
+                                    try {
+                                        System.out.println("Please enter the new category:");
                                         input = scanner.nextLine();
-                                        try {
-                                            String sql = "DELETE Product WHERE product_NO = ?";
-                                            PreparedStatement deleteproduct = conn.prepareStatement(sql);
-                                            deleteproduct.setInt(1, Integer.parseInt(input));
-                                            deleteproduct.executeUpdate();
-                                            System.out.println("Delete successfully!");
-                                        } catch (SQLException e) {
-                                            System.out.println(e);
-                                        }
-                                        break;
-                                    case "5":
-                                        System.out.println("Please enter the product NO of the product you want to update:");
-                                        String NO = scanner.nextLine();
-                                        System.out.println("Please enter the update information corresponding number:\n1. Product name \n2. Product unit price\n3. Product category \n4. Product stock level ");
+                                        String sql = "UPDATE Product SET category = ? WHERE product_NO = ?;";
+                                        PreparedStatement updateproduct = conn.prepareStatement(sql);
+                                        updateproduct.setString(1, input);
+                                        updateproduct.setInt(2, Integer.parseInt(NO));
+                                        updateproduct.executeUpdate();
+                                        System.out.println("Update successfully!");
+                                    } catch (SQLException e) {
+                                        System.out.println(e);
+                                    }
+                                    break;
+                                case "4":
+                                    try {
+                                        System.out.println("Please enter the new stock level:");
                                         input = scanner.nextLine();
-                                        switch (input) {
-                                            case "1":
-                                                try {
-                                                    System.out.println("Please enter the new name:");
-                                                    input = scanner.nextLine();
-                                                    String sql = "UPDATE Product SET product_name = ? WHERE product_NO = ?;";
-                                                    PreparedStatement updateproduct = conn.prepareStatement(sql);
-                                                    updateproduct.setString(1, input);
-                                                    updateproduct.setInt(2, Integer.parseInt(NO));
-                                                    updateproduct.executeUpdate();
-                                                    System.out.println("Update successfully!");
-                                                } catch (SQLException e) {
-                                                    System.out.println(e);
-                                                }
-                                                break;
-                                            case "2":
-                                                try {
-                                                    System.out.println("Please enter the new price:");
-                                                    input = scanner.nextLine();
-                                                    String sql = "UPDATE Product SET unit_price = ? WHERE product_NO = ?;";
-                                                    PreparedStatement updateproduct = conn.prepareStatement(sql);
-                                                    updateproduct.setFloat(1, Float.parseFloat(input));
-                                                    updateproduct.setInt(2, Integer.parseInt(NO));
-                                                    updateproduct.executeUpdate();
-                                                    System.out.println("Update successfully!");
-                                                } catch (SQLException e) {
-                                                    System.out.println(e);
-                                                }
-                                                break;
-                                            case "3":
-                                                try {
-                                                    System.out.println("Please enter the new category:");
-                                                    input = scanner.nextLine();
-                                                    String sql = "UPDATE Product SET category = ? WHERE product_NO = ?;";
-                                                    PreparedStatement updateproduct = conn.prepareStatement(sql);
-                                                    updateproduct.setString(1, input);
-                                                    updateproduct.setInt(2, Integer.parseInt(NO));
-                                                    updateproduct.executeUpdate();
-                                                    System.out.println("Update successfully!");
-                                                } catch (SQLException e) {
-                                                    System.out.println(e);
-                                                }
-                                                break;
-                                            case "4":
-                                                try {
-                                                    System.out.println("Please enter the new stock level:");
-                                                    input = scanner.nextLine();
-                                                    String sql = "UPDATE Product SET stock_level = ? WHERE product_NO = ?;";
-                                                    PreparedStatement updateproduct = conn.prepareStatement(sql);
-                                                    updateproduct.setInt(1, Integer.parseInt(input));
-                                                    updateproduct.setInt(2, Integer.parseInt(NO));
-                                                    updateproduct.executeUpdate();
-                                                    System.out.println("Update successfully!");
-                                                } catch (SQLException e) {
-                                                    System.out.println(e);
-                                                }
-                                                break;
-                                            default:
-                                                System.out.println("Invalid number, please try again.");
-                                        }
-                                        break;
-                                    default:
-                                        System.out.println("Invalid number, please try again.");
-                                        // How to go back?
+                                        String sql = "UPDATE Product SET stock_level = ? WHERE product_NO = ?;";
+                                        PreparedStatement updateproduct = conn.prepareStatement(sql);
+                                        updateproduct.setInt(1, Integer.parseInt(input));
+                                        updateproduct.setInt(2, Integer.parseInt(NO));
+                                        updateproduct.executeUpdate();
+                                        System.out.println("Update successfully!");
+                                    } catch (SQLException e) {
+                                        System.out.println(e);
+                                    }
+                                    break;
+                                default:
+                                    System.out.println("Invalid number, please try again.");
+                            }
+                            break;
+                        default:
+                            System.out.println("Invalid number, please try again.");
+                            // How to go back?
+                    }
+                    break;
+                case "5":
+                    System.out.println("Please enter the corresponding number:\n1. Report for product sales data\n2. Report for user behavior");
+                    String Input = scanner.nextLine();
+                    if (Input == "1"){
+                        System.out.println("Please enter the corresponding number for the data you want to check:\n1. Products sales ranking\n2. Products sales ranking under a specific category\n3. Products sales ranking under a specific merchant\n4. Merchant sales ranking");
+                        Input = scanner.nextLine();
+                        switch (Input) {
+                            case "1":
+                                try {
+                                    String sql = "SELECT product_NO, product_name, category, sales FROM Product ORDER BY sales DESC;";
+                                    PreparedStatement productsalerank1 = conn.prepareStatement(sql);
+                                    ResultSet rSet = productsalerank1.executeQuery();
+                                    System.out.println("product NO\t\tproduct name\t\tcategory\t\tsales");
+                                    while (rSet.next()) {
+                                        int product_NO = rSet.getInt("product_NO");
+                                        String product_name = rSet.getString("product_name");
+                                        String category = rSet.getString("category");
+                                        int sales = rSet.getInt("sales");
+                                        System.out.println(product_NO + "\t\t" + product_name + "\t\t" + category + "\t\t" + sales);
+                                    }
+                                } catch (SQLException e) {
+                                    System.out.println(e);
                                 }
                                 break;
-                            case "q":
-                                quit = true;
+                            case "2":
+                                System.out.println("Please enter the category you want to check:");
+                                Input = scanner.nextLine();
+                                try {
+                                    String sql = "SELECT product_NO, product_name, category, sales FROM Product WHERE category = ? ORDER BY sales DESC;";
+                                    PreparedStatement productsalerank2 = conn.prepareStatement(sql);
+                                    productsalerank2 .setString(1, Input);
+                                    ResultSet rSet = productsalerank2.executeQuery();
+                                    System.out.println("product NO\t\tproduct name\t\tcategory\t\tsales");
+                                    while (rSet.next()) {
+                                        int product_NO = rSet.getInt("product_NO");
+                                        String product_name = rSet.getString("product_name");
+                                        String category = rSet.getString("category");
+                                        int sales = rSet.getInt("sales");
+                                        System.out.println(product_NO + "\t\t" + product_name + "\t\t" + category + "\t\t" + sales);
+                                    }
+                                } catch (SQLException e) {
+                                    System.out.println(e);
+                                }
+                                break;
+                            case "3":
+                                System.out.println("Please enter the merchant you want to check:");
+                                Input = scanner.nextLine();
+                                try {
+                                    String sql = "SELECT product_NO, product_name, category, sales FROM Product JOIN Merchant ON Product.merchant_ID = Merchant.merchant_ID " +
+                                            "WHERE Merchant.merchant_name = ? ORDER BY sales DESC;";
+                                    PreparedStatement productsalerank3 = conn.prepareStatement(sql);
+                                    productsalerank3.setString(1, Input);
+                                    ResultSet rSet = productsalerank3.executeQuery();
+                                    System.out.println("product NO\t\tproduct name\t\tcategory\t\tsales");
+                                    while (rSet.next()) {
+                                        int product_NO = rSet.getInt("product_NO");
+                                        String product_name = rSet.getString("product_name");
+                                        String category = rSet.getString("category");
+                                        int sales = rSet.getInt("sales");
+                                        System.out.println(product_NO + "\t\t" + product_name + "\t\t" + category + "\t\t" + sales);
+                                    }
+                                } catch (SQLException e) {
+                                    System.out.println(e);
+                                }
+                                break;
+                            case "4":
+                                try {
+                                    String sql = "SELECT Product.merchant_ID, Merchant.merchant_name, SUM(Product.sales) AS total_sales " +
+                                            "FROM Product JOIN Merchant ON Product.merchant_ID = Merchant.merchant_ID " +
+                                            "GROUP BY Product.merchant_ID, Merchant.merchant_name " + "ORDER BY total_sales DESC;";
+                                    PreparedStatement merchantsalerank = conn.prepareStatement(sql);
+                                    ResultSet rSet = merchantsalerank.executeQuery();
+                                    System.out.println("merchant ID\t\tmerchant name\t\ttotal sales");
+                                    while (rSet.next()) {
+                                        int merchant_ID = rSet.getInt("pmerchant_ID");
+                                        String merchant_name = rSet.getString("merchant_name");
+                                        int total_sales = rSet.getInt("total_sales");
+                                        System.out.println(merchant_ID + "\t\t" + merchant_name + "\t\t" + total_sales );
+                                    }
+                                } catch (SQLException e) {
+                                    System.out.println(e);
+                                }
                                 break;
                             default:
-                                System.out.println("Invalid command, please try again.");
+                                System.out.println("Invalid number, please try again.");
                         }
+                    }else if(Input == "2"){
+                        System.out.println("Enter 1 to check a specific user behavior\nEnter 2 to check all users behavior");
+                        Input = scanner.nextLine();
+                        if (Input == "1"){
+                            System.out.println("Please enter the customer's ID you want to check:");
+                            Input = scanner.nextLine();
+                            System.out.println("Please enter the corresponding number for the data you want to check:\n1. Order information\n2. Product preferences\n3. Category preferences\n4. Merchant preferences");
+                            String In = scanner.nextLine();
+                            switch (In) {
+                                case "1":
+                                    try {
+                                        String sql = "SELECT O.order_NO, O.order_date, C.customer_name, P.product_name, O.quantity, O.total_price, O.payment, O.address " +
+                                                "FROM Order O JOIN Product P ON O.product_NO = P.product_NO JOIN Customer C ON O.customer_ID = C.customer_ID " +
+                                                "WHERE C.customer_ID = ? " + "ORDER BY C.customer_name, O.order_date;";
+                                        PreparedStatement orderinfo = conn.prepareStatement(sql);
+                                        orderinfo.setInt(1, Integer.parseInt(Input));
+                                        ResultSet rSet = orderinfo.executeQuery();
+                                        System.out.println("order NO\t\torder date\t\tcustomer name\t\tproduct name\t\tquantity\t\ttotal price\t\tpayment\t\taddress");
+                                        while (rSet.next()) {
+                                            int order_NO= rSet.getInt("order_NO");
+                                            Date order_date = rSet.getDate("order_date");
+                                            String customer_name = rSet.getString("customer_name");
+                                            String product_name = rSet.getString("product_name");
+                                            int quantity = rSet.getInt("quantity");
+                                            float total_price = rSet.getFloat("total_price");
+                                            String payment = rSet.getString("payment");
+                                            String address = rSet.getString("address");
+                                            System.out.println(order_NO + "\t\t" + order_date + "\t\t" + customer_name + "\t\t" + product_name+ "\t\t" + quantity + "\t\t" + total_price + "\t\t" + payment + "\t\t" + address);
+                                        }
+                                    }catch (SQLException e) {
+                                        System.out.println(e);
+                                    }
+                                    break;
+                                case "2":
+                                    try {
+                                        String sql = "SELECT C.customer_name, P.product_name, P.category, SUM(O.quantity) AS total_quantity " +
+                                                "FROM Customer C JOIN Order O ON C.customer_ID = O.customer_ID JOIN Product P ON O.product_NO = P.product_NO " +
+                                                "WHERE C.customer_ID = ? " + "GROUP BY P.product_NO, C.customer_ID " + "ORDER BY C.customer_ID, total_quantity DESC;";
+                                        PreparedStatement productpreference = conn.prepareStatement(sql);
+                                        productpreference.setInt(1, Integer.parseInt(Input));
+                                        ResultSet rSet = productpreference.executeQuery();
+                                        System.out.println("customer name\t\tproduct name\t\tcategory\t\ttotal quantity");
+                                        while (rSet.next()) {
+                                            String customer_name = rSet.getString("customer_name");
+                                            String product_name = rSet.getString("product_name");
+                                            String category = rSet.getString("category");
+                                            int total_quantity = rSet.getInt("total_quantity");
+                                            System.out.println(customer_name + "\t\t" + product_name + "\t\t" + category + "\t\t" + total_quantity);
+                                        }
+                                    }catch (SQLException e) {
+                                        System.out.println(e);
+                                    }
+                                    break;
+                                case "3":
+                                    try {
+                                        String sql = "SELECT C.customer_name, P.category, SUM(O.quantity) AS total_quantity " +
+                                                "FROM Customer C JOIN Order O ON C.customer_ID = O.customer_ID JOIN Product P ON O.product_NO = P.product_NO " +
+                                                "WHERE C.customer_ID = ? " + "GROUP BY P.category, C.customer_ID " + "ORDER BY C.customer_ID, total_quantity DESC;";
+                                        PreparedStatement categorypreference = conn.prepareStatement(sql);
+                                        categorypreference.setInt(1, Integer.parseInt(Input));
+                                        ResultSet rSet = categorypreference.executeQuery();
+                                        System.out.println("customer name\t\tcategory\t\ttotal quantity");
+                                        while (rSet.next()) {
+                                            String customer_name = rSet.getString("customer_name");
+                                            String category = rSet.getString("category");
+                                            int total_quantity = rSet.getInt("total_quantity");
+                                            System.out.println(customer_name + "\t\t"  + category + "\t\t" + total_quantity);
+                                        }
+                                    }catch (SQLException e) {
+                                        System.out.println(e);
+                                    }
+                                    break;
+                                case "4":
+                                    try {
+                                        String sql = "SELECT C.customer_name, M.merchant_name, SUM(O.quantity) AS total_quantity " +
+                                                "FROM Customer C JOIN Order O ON C.customer_ID = O.customer_ID JOIN Product P ON O.product_NO = P.product_NO JOIN Merchant M on M.merchant_ID = P.merchant_ID " +
+                                                "WHERE C.customer_ID = ? " + "GROUP BY M.merchant_ID, C.customer_ID " + "ORDER BY C.customer_ID, total_quantity DESC;";
+                                        PreparedStatement merchantpreference = conn.prepareStatement(sql);
+                                        merchantpreference.setString(1, Input);
+                                        ResultSet rSet = merchantpreference.executeQuery();
+                                        System.out.println("customer name\t\tmerchant name\t\ttotal quantity");
+                                        while (rSet.next()) {
+                                            String customer_name = rSet.getString("customer_name");
+                                            String merchant_name = rSet.getString("merchant_name");
+                                            int total_quantity = rSet.getInt("total_quantity");
+                                            System.out.println(customer_name + "\t\t" + merchant_name + "\t\t" + total_quantity);
+                                        }
+                                    }catch (SQLException e) {
+                                        System.out.println(e);
+                                    }
+                                    break;
+                                default:
+                                    System.out.println("Invalid number, please try again.");
+                            }
+                        }else if (Input == "2"){
+                            System.out.println("Please enter the corresponding number for the data you want to check:\n1. Order information\n2. Product preferences\n3. Category preferences\n4. Merchant preferences");
+                            Input = scanner.nextLine();
+                            switch (Input) {
+                                case "1":
+                                    try {
+                                        String sql = "SELECT O.order_NO, O.order_date, C.customer_name, P.product_name, O.quantity, O.total_price, O.payment, O.address " +
+                                                "FROM Order O JOIN Product P ON O.product_NO = P.product_NO JOIN Customer C ON O.customer_ID = C.customer_ID " +
+                                                "ORDER BY C.customer_name, O.order_date;";
+                                        PreparedStatement allorderinfo = conn.prepareStatement(sql);
+                                        ResultSet rSet = allorderinfo.executeQuery();
+                                        System.out.println("order NO\t\torder date\t\tcustomer name\t\tproduct name\t\tquantity\t\ttotal price\t\tpayment\t\taddress");
+                                        while (rSet.next()) {
+                                            int order_NO= rSet.getInt("order_NO");
+                                            Date order_date = rSet.getDate("order_date");
+                                            String customer_name = rSet.getString("customer_name");
+                                            String product_name = rSet.getString("product_name");
+                                            int quantity = rSet.getInt("quantity");
+                                            float total_price = rSet.getFloat("total_price");
+                                            String payment = rSet.getString("payment");
+                                            String address = rSet.getString("address");
+                                            System.out.println(order_NO + "\t\t" + order_date + "\t\t" + customer_name + "\t\t" + product_name+ "\t\t" + quantity + "\t\t" + total_price + "\t\t" + payment + "\t\t" + address);
+                                        }
+                                    } catch (SQLException e) {
+                                        System.out.println(e);
+                                    }
+                                    break;
+                                case "2":
+                                    try {
+                                        String sql = "SELECT C.customer_name, P.product_name, P.category, SUM(O.quantity) AS total_quantity " +
+                                                "FROM Customer C JOIN Order O ON C.customer_ID = O.customer_ID JOIN Product P ON O.product_NO = P.product_NO " +
+                                                "GROUP BY P.product_NO, C.customer_ID " +
+                                                "ORDER BY C.customer_ID, total_quantity DESC;";
+                                        PreparedStatement allproductpreference = conn.prepareStatement(sql);
+                                        ResultSet rSet = allproductpreference.executeQuery();
+                                        System.out.println("customer name\t\tproduct name\t\tcategory\t\ttotal quantity");
+                                        while (rSet.next()) {
+                                            String customer_name = rSet.getString("customer_name");
+                                            String product_name = rSet.getString("product_name");
+                                            String category = rSet.getString("category");
+                                            int total_quantity = rSet.getInt("total_quantity");
+                                            System.out.println(customer_name + "\t\t" + product_name + "\t\t" + category + "\t\t" + total_quantity);
+                                        }
+                                    } catch (SQLException e) {
+                                        System.out.println(e);
+                                    }
+                                    break;
+                                case "3":
+                                    try {
+                                        String sql = "SELECT C.customer_name, P.category, SUM(O.quantity) AS total_quantity " +
+                                                "FROM Customer C JOIN Order O ON C.customer_ID = O.customer_ID JOIN Product P ON O.product_NO = P.product_NO " +
+                                                "GROUP BY P.category, C.customer_ID " +
+                                                "ORDER BY C.customer_ID, total_quantity DESC;";
+                                        PreparedStatement allcategorypreference = conn.prepareStatement(sql);
+                                        ResultSet rSet = allcategorypreference.executeQuery();
+                                        System.out.println("customer name\t\tcategory\t\ttotal quantity");
+                                        while (rSet.next()) {
+                                            String customer_name = rSet.getString("customer_name");
+                                            String category = rSet.getString("category");
+                                            int total_quantity = rSet.getInt("total_quantity");
+                                            System.out.println(customer_name + "\t\t"  + category + "\t\t" + total_quantity);
+                                        }
+                                    } catch (SQLException e) {
+                                        System.out.println(e);
+                                    }
+                                    break;
+                                case "4":
+                                    try {
+                                        String sql = "SELECT C.customer_name, M.merchant_name, SUM(O.quantity) AS total_quantity " +
+                                                "FROM Customer C JOIN Order O ON C.customer_ID = O.customer_ID JOIN Product P ON O.product_NO = P.product_NO JOIN Merchant M on M.merchant_ID = P.merchant_ID " +
+                                                "GROUP BY  M.merchant_ID, C.customer_ID " +
+                                                "ORDER BY C.customer_ID, total_quantity DESC;";
+                                        PreparedStatement allmerchantpreference = conn.prepareStatement(sql);
+                                        ResultSet rSet = allmerchantpreference.executeQuery();
+                                        System.out.println("customer name\t\tmerchant name\t\ttotal quantity");
+                                        while (rSet.next()) {
+                                            String customer_name = rSet.getString("customer_name");
+                                            String merchant_name = rSet.getString("merchant_name");
+                                            int total_quantity = rSet.getInt("total_quantity");
+                                            System.out.println(customer_name + "\t\t" + merchant_name + "\t\t" + total_quantity);
+                                        }
+                                    } catch (SQLException e) {
+                                        System.out.println(e);
+                                    }
+                                    break;
+                                default:
+                                    System.out.println("Invalid number, please try again.");
+                            }
+                        }else{
+                            System.out.println("Invalid number, please try again.");
+                        }
+                    }else{
+                        System.out.println("Invalid number, please try again.");
                     }
-                    System.out.println("Thank you for using our system.");
+                case "q":
+                    quit = true;
+                    break;
+                default:
+                    System.out.println("Invalid command, please try again.");
             }
+        }
+        System.out.println("Thank you for using our system.");
+    }
 
 
     public String input_detection (){
