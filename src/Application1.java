@@ -207,6 +207,7 @@ public class Application1 {
                                             System.out.println(customerID + " " + productNO + " " + productName + " " + unit_price + " " + quantity + " " + total_price);
                                         }
                                     } catch (SQLException e) {
+                                        System.out.println(e);
                                         System.out.println("invalid input, try again");
                                         break;
                                     }
@@ -225,7 +226,7 @@ public class Application1 {
                                 String ap = "SELECT address, payment FROM Customer WHERE customer_name = ?";
                                 PreparedStatement state = conn.prepareStatement(ap);
                                 state.setString(1, application.userName);
-                                ResultSet result = state.executeQuery(ap);
+                                ResultSet result = state.executeQuery();
                                 String address = null;
                                 String payment = null;
                                 if (resultSet.next()) {
@@ -252,6 +253,7 @@ public class Application1 {
                                 System.out.println("the customer name is: " + application.userName);
                                 System.out.println("the payment is: " + payment);
                                 System.out.println("the address is: " + address);
+
                                 break;
                             case "3":
                                 boolean flag3 = true;
@@ -266,6 +268,7 @@ public class Application1 {
                                         deleteStatement.executeUpdate();
                                         System.out.println("the record has been delete successfully");
                                     } catch (SQLException e) {
+                                        System.out.println(e);
                                         System.out.println("invalid input, try again");
                                         break;
                                     }
@@ -280,8 +283,14 @@ public class Application1 {
                                         System.out.println("please enter the new value and the product_name that you want to change\n" +
                                                 "please enter by the order otherwise the input may be invalid" +
                                                 "only the quantity, total value");
-                                        float required = temp.nextFloat();
-                                        String pName = temp.next();
+                                        String check= temp.nextLine();
+                                        String [] command = check.split(" ");
+                                        if (command.length > 2){
+                                            System.out.println("invalid input");
+                                            break;
+                                        }
+                                        float required = Float.parseFloat(command[0]);
+                                        String pName = command[1];
                                         float totp;
                                         String updateQuery = "UPDATE shopping_cart SET quantity = ?,total_price = ? WHERE product_name = ?";
                                         String unitp = "SELECT unit_price FROM shopping_cart WHERE product_name = ?";
@@ -300,6 +309,7 @@ public class Application1 {
                                         updateStatement.executeUpdate();
                                         System.out.println("the value has been updated successfully");
                                     } catch (SQLException e) {
+                                        System.out.println(e);
                                         System.out.println("invalid input, try again");
                                         break;
                                     }
@@ -314,7 +324,8 @@ public class Application1 {
                                         float unit_price, total_value;
                                         String product_name;
                                         System.out.println("please enter the customer_ID, product_NO, product_name, unit_price, quantity and split with space\n" +
-                                                "please follow the order or the input may be invalid");
+                                                "please follow the order or the input may be invalid"+
+                                                "the part out of the range of input value will not be contain in the record");
                                         Scanner input = new Scanner(System.in);
                                         customer_ID = input.nextInt();
                                         product_NO = input.nextInt();
@@ -322,7 +333,7 @@ public class Application1 {
                                         unit_price = input.nextFloat();
                                         quant = input.nextInt();
                                         total_value = unit_price * quant;
-                                        String insertQuery = "INSERT INTO shopping_cart(customer_ID, product_NO, product_name, unit_price, quantity, total_value) VALUES (?, ?, ?, ?, ?, ?)";
+                                        String insertQuery = "INSERT INTO shopping_cart(customer_ID, product_NO, product_name, unit_price, quantity, total_price) VALUES (?, ?, ?, ?, ?, ?)";
                                         PreparedStatement insertStatement = conn.prepareStatement(insertQuery);
                                         insertStatement.setInt(1, customer_ID);
                                         insertStatement.setInt(2, product_NO);
@@ -333,6 +344,7 @@ public class Application1 {
                                         insertStatement.executeUpdate();
                                         System.out.println("the record has been update successfully");
                                     } catch (SQLException e) {
+                                        System.out.println(e);
                                         System.out.println("invalid input, try again");
                                         break;
                                     }
@@ -794,7 +806,6 @@ public class Application1 {
                         System.out.println("the input cannot be empty");
                         throw new IllegalArgumentException();
                     case "quit":
-                        flag =false;
                         break;
                     default:
                         if (input.charAt(0)<'0' || input.charAt(0)>'9') {
@@ -804,6 +815,7 @@ public class Application1 {
             } catch (IllegalArgumentException e) {
                 System.out.println("please try again");
             }
+            flag =false;
         }
         return input;
     }
