@@ -9,6 +9,7 @@ public class Application1 {
     int userId;
 
     public static void main(String[] args) throws Exception {
+        int order_num = 0;
         Application1 application = new Application1();
         // Access to server
         Scanner scanner = new Scanner(System.in);
@@ -215,6 +216,7 @@ public class Application1 {
                                 }
                                 break;
                             case "2":
+                                String sql = "INSERT INTO \"Order\" (order_NO, customer_ID, order_date, product_NO, quantity, total_price, payment, address) VALUES (?, ?, TO_DATE(?, 'YYYY-MM-DD'), ?, ?, ?, ?, ?)";
                                 String sum = "SELECT SUM(total_price) AS overall_price FROM shopping_cart";
                                 Statement statement = conn.createStatement();
                                 ResultSet resultSet = statement.executeQuery(sum);
@@ -223,15 +225,17 @@ public class Application1 {
                                     overallPrice = resultSet.getFloat("overall_price");
                                     System.out.println("Overall Price: " + overallPrice);
                                 }
-                                String ap = "SELECT address, payment FROM Customer WHERE customer_name = ?";
+                                String ap = "SELECT address, payment,customer_ID FROM Customer WHERE customer_name = ?";
                                 PreparedStatement state = conn.prepareStatement(ap);
                                 state.setString(1, application.userName);
                                 ResultSet result = state.executeQuery();
                                 String address = null;
                                 String payment = null;
+                                int customer_ID = 0;
                                 if (resultSet.next()) {
                                     address = result.getString("address");
                                     payment = result.getString("payment");
+                                    customer_ID = result.getInt("customer_ID");
                                 }
                                 String all = "SELECT * FROM shopping_cart";
                                 Statement st = conn.createStatement();
@@ -239,6 +243,10 @@ public class Application1 {
                                 int customerID, productNO, quantity;
                                 float unitPrice, totalPrice;
                                 String productName;
+                                String stock_update = "UPDATE stock_level SET stock_level = stock_level - ? WHERE product_name = ?";
+                                PreparedStatement insert_order = conn.prepareStatement(sql);
+                                PreparedStatement update_stock = conn.prepareStatement(stock_update);
+                                int rowsAffected = 0;
                                 while (rs.next()) {
                                     customerID = rs.getInt("customer_ID");
                                     productNO = rs.getInt("product_NO");
@@ -249,11 +257,36 @@ public class Application1 {
 
                                     System.out.println(customerID + " " + productNO + " " + productName + " " + unitPrice +
                                             " " + quantity + " " + totalPrice);
+
+                                    insert_order.setInt(1, order_num);
+                                    insert_order.setInt(2, customer_ID);
+                                    insert_order.setString(3, "2023-11-01");
+                                    insert_order.setInt(4, productNO);
+                                    insert_order.setInt(5, quantity);
+                                    insert_order.setFloat(6, Float.parseFloat(sum));
+                                    insert_order.setString(7, payment);
+                                    insert_order.setString(8, address);
+                                    rowsAffected = insert_order.executeUpdate();
+                                    order_num++;
+                                    update_stock.setInt(1, quantity);
+                                    update_stock.setString(2, productName);
+                                    update_stock.executeUpdate();
                                 }
+
+
+
+                                // 设置参数值
+
+
                                 System.out.println("the customer name is: " + application.userName);
                                 System.out.println("the payment is: " + payment);
                                 System.out.println("the address is: " + address);
 
+
+
+                                if (rowsAffected > 0){
+                                    System.out.println("the purchasing has been update to Order record");
+                                }
                                 break;
                             case "3":
                                 boolean flag3 = true;
@@ -320,14 +353,14 @@ public class Application1 {
                                 boolean flag5 = true;
                                 while (flag5) {
                                     try {
-                                        int customer_ID, product_NO, quant;
+                                        int customer_num, product_NO, quant;
                                         float unit_price, total_value;
                                         String product_name;
                                         System.out.println("please enter the customer_ID, product_NO, product_name, unit_price, quantity and split with space\n" +
                                                 "please follow the order or the input may be invalid"+
                                                 "the part out of the range of input value will not be contain in the record");
                                         Scanner input = new Scanner(System.in);
-                                        customer_ID = input.nextInt();
+                                        customer_num = input.nextInt();
                                         product_NO = input.nextInt();
                                         product_name = input.next();
                                         unit_price = input.nextFloat();
@@ -335,7 +368,7 @@ public class Application1 {
                                         total_value = unit_price * quant;
                                         String insertQuery = "INSERT INTO shopping_cart(customer_ID, product_NO, product_name, unit_price, quantity, total_price) VALUES (?, ?, ?, ?, ?, ?)";
                                         PreparedStatement insertStatement = conn.prepareStatement(insertQuery);
-                                        insertStatement.setInt(1, customer_ID);
+                                        insertStatement.setInt(1, customer_num);
                                         insertStatement.setInt(2, product_NO);
                                         insertStatement.setString(3, product_name);
                                         insertStatement.setFloat(4, unit_price);
