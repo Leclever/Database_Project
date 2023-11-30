@@ -170,9 +170,6 @@ public class Application1 {
                                 filterResultSet.close();
                                 statement.close();
                                 break;
-
-                            // Add more cases here for more options
-
                             default:
                                 System.out.println("Invalid option. Please try again.");
                                 break;
