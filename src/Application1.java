@@ -29,12 +29,12 @@ public class Application1 {
         String type = "";
         Statement stmt = conn.createStatement();
         boolean matched;
-        String drop_table = "DROP TABLE Customer;" +
-                "DROP TABLE Merchant;\n" +
-                "DROP TABLE Product;\n" +
-                "DROP TABLE shopping_cart;\n" +
-                "DROP TABLE \"Order\";\n" +
-                "DROP TABLE report;";
+        String drop_table = "DROP TABLE Customer" +
+                "DROP TABLE Merchant \n" +
+                "DROP TABLE Product \n" +
+                "DROP TABLE shopping_cart\n" +
+                "DROP TABLE \"Order\" \n" +
+                "DROP TABLE report ";
         Statement delete_table = conn.createStatement();
         ResultSet recieve_delete = delete_table.executeQuery(drop_table);
 
@@ -44,12 +44,12 @@ public class Application1 {
                 "    password INTEGER,\n" +
                 "    address VARCHAR(255),\n" +
                 "    payment VARCHAR(255)\n" +
-                ");" +
+                ")" +
                 "CREATE TABLE Merchant(\n" +
                 "    merchant_ID INTEGER,\n" +
                 "    merchant_name VARCHAR(255),\n" +
                 "    product_NO INTEGER\n" +
-                "    );"+
+                "    )"+
                 "CREATE TABLE Product(\n" +
                 "    product_NO INTEGER,\n" +
                 "    product_name VARCHAR(255),\n" +
@@ -59,7 +59,7 @@ public class Application1 {
                 "    brand VARCHAR(255),\n" +
                 "    stock_level INTEGER,\n" +
                 "    sales INTEGER\n" +
-                ");"+
+                ")"+
                 "CREATE TABLE shopping_cart(\n" +
                 "    customer_ID INTEGER,\n" +
                 "    product_NO INTEGER,\n" +
@@ -67,7 +67,7 @@ public class Application1 {
                 "    unit_price FLOAT,\n" +
                 "    quantity INTEGER,\n" +
                 "    total_price FLOAT\n" +
-                ");"+
+                ")"+
                 "CREATE TABLE \"Order\" (\n" +
                 "    order_NO INTEGER,\n" +
                 "    customer_ID INTEGER,\n" +
@@ -77,7 +77,7 @@ public class Application1 {
                 "    total_price FLOAT,\n" +
                 "    payment VARCHAR(255),\n" +
                 "    address VARCHAR(255)\n" +
-                ");"+
+                ")"+
                 "CREATE TABLE report(\n" +
                 "    date_of_report DATE,\n" +
                 "    customer_ID INTEGER,\n" +
@@ -87,80 +87,75 @@ public class Application1 {
                 "    unit_price FLOAT,\n" +
                 "    brand VARCHAR(255),\n" +
                 "    inventory INTEGER\n" +
-                ");";
+                ")";
 
         Statement insert_table = conn.createStatement();
         ResultSet recieve_table = insert_table.executeQuery(create_table);
-        String create_data = "INSERT INTO Customer VALUES (1, 'John Doe', 12345, '123 Main St, Anytown', 'Credit Card');\n" +
-                "INSERT INTO Customer VALUES (2, 'Jane Smith', 67890, '456 Oak Dr, Somecity', 'Debit Card');\n" +
-                "INSERT INTO Customer VALUES (3, 'Robert Johnson', 11223, '789 Pine Rd, Othertown', 'Paypal');\n" +
-                "INSERT INTO Customer VALUES (4, 'Alice Williams', 44556, '111 Tree St, Cityville', 'Credit Card');\n" +
-                "INSERT INTO Customer VALUES (5, 'Bob Brown', 77889, '222 River Rd, Townville', 'Debit Card');\n" +
-                "INSERT INTO Customer VALUES (6, 'Charlie Davis', 33221, '333 Hill Ln, Villecity', 'Paypal');\n" +
-                "INSERT INTO Customer VALUES (7, 'David Miller', 99331, '444 Peak Pl, Villeton', 'Credit Card');\n" +
-                "INSERT INTO Customer VALUES (8, 'Eva Garcia', 66332, '555 Beach Blvd, Coastown', 'Debit Card');\n" +
-                "INSERT INTO Customer VALUES (9, 'Frank Wilson', 33445, '666 Lake Ln, Laketon', 'Paypal');\n" +
-                "INSERT INTO Customer VALUES (10, 'Grace Martinez', 99884, '777 Star St, Skyville', 'Credit Card');\n" +
-                "\n" +
-                "// merchant\n" +
-                "INSERT INTO Merchant VALUES (1, 'Apple', 101);\n" +
-                "INSERT INTO Merchant VALUES (2, 'Apple', 102);\n" +
-                "INSERT INTO Merchant VALUES (3, 'XIAOMI', 103);\n" +
-                "INSERT INTO Merchant VALUES (4, 'XIOAMI', 104);\n" +
-                "INSERT INTO Merchant VALUES (5, 'HUAWEI', 105);\n" +
-                "INSERT INTO Merchant VALUES (6, 'Apple', 106);\n" +
-                "INSERT INTO Merchant VALUES (7, 'HUAWEI', 107);\n" +
-                "INSERT INTO Merchant VALUES (8, 'XIAOMI', 108);\n" +
-                "INSERT INTO Merchant VALUES (9, 'Apple', 109);\n" +
-                "INSERT INTO Merchant VALUES (10, 'HUAWEI', 110);\n" +
-                "\n" +
-                "//product\n" +
-                "INSERT INTO Product VALUES (101, 'phone', 19.99, 1, 1, 'apple', 100, 50;\n" +
-                "INSERT INTO Product VALUES (102, 'ipad', 29.99, 2, 2, 'HUWEI', 200, 60);\n" +
-                "INSERT INTO Product VALUES (103, 'computer', 39.99, 3, 2, 'XIAOMI', 150, 70);\n" +
-                "INSERT INTO Product VALUES (104, 'earphone', 49.99, 4, 2, 'apple', 180, 80);\n" +
-                "INSERT INTO Product VALUES (105, 'mouse', 59.99, 2, 5, 'HUWEI', 170, 90);\n" +
-                "INSERT INTO Product VALUES (106, 'phone', 89.99, 3, 6, 'XIAOMI', 120, 30);\n" +
-                "INSERT INTO Product VALUES (107, 'ipad', 99.99, 1, 7, 'HUWEI', 130, 40);\n" +
-                "INSERT INTO Product VALUES (108, 'mouse', 79.99, 2, 8, 'XIAOMI', 140, 50);\n" +
-                "INSERT INTO Product VALUES (109, 'computer', 69.99, 9, 5, 'HUWEI', 150, 60);\n" +
-                "INSERT INTO Product VALUES (110, 'ipad', 59.99, 1, 10, 'apple', 160, 70);\n" +
-                "\n" +
-                "//shopping_cart\n" +
-                "INSERT INTO shopping_cart VALUES (1, 101, 'Phone', 19.99, 2, 19.99*2);\n" +
-                "INSERT INTO shopping_cart VALUES (2, 102, 'HUAWEI', 29.99, 1, 29.99*1);\n" +
-                "INSERT INTO shopping_cart VALUES (3, 103, 'ipad', 39.99, 3, 39.99*3);\n" +
-                "INSERT INTO shopping_cart VALUES (4, 104, 'HUAWEI', 49.99, 2, 49.99*2);\n" +
-                "INSERT INTO shopping_cart VALUES (2, 107, 'ipad', 59.99, 1, 59.99*1);\n" +
-                "INSERT INTO shopping_cart VALUES (6, 101, 'Phone', 19.99, 2, 19.99*2);\n" +
-                "INSERT INTO shopping_cart VALUES (7, 102, 'HUAWEI', 29.99, 1, 29.99*1);\n" +
-                "INSERT INTO shopping_cart VALUES (8, 103, 'ipad', 39.99, 3, 39.99*3);\n" +
-                "INSERT INTO shopping_cart VALUES (6, 104, 'HUAWEI', 49.99, 2, 49.99*2);\n" +
-                "INSERT INTO shopping_cart VALUES (10, 109, 'ipad', 59.99, 1, 59.99*1);\n" +
-                "\n" +
-                "//orders\n" +
-                "INSERT INTO \"Order\" VALUES (1, 1, TO_DATE('2023-11-01', 'YYYY-MM-DD'), 101, 2, 19.99*2, 'Credit Card', '123 Main St, City');\n" +
-                "INSERT INTO \"Order\" VALUES (2, 1, TO_DATE('2023-10-05', 'YYYY-MM-DD'), 101, 2, 19.99*2, 'Credit Card', '123 Main St, City');\n" +
-                "INSERT INTO \"Order\" VALUES (3, 1, TO_DATE('2023-06-03', 'YYYY-MM-DD'), 102, 1, 29.99*1, 'Credit Card', '123 Main St, City');\n" +
-                "INSERT INTO \"Order\" VALUES (4, 2, TO_DATE('2023-08-01', 'YYYY-MM-DD'), 103, 3, 39.99*3, 'PayPal', '456 Maple Dr, City');\n" +
-                "INSERT INTO \"Order\" VALUES (5, 2, TO_DATE('2023-04-10', 'YYYY-MM-DD'), 104, 2, 49.99*2, 'PayPal', '456 Maple Dr, City');\n" +
-                "INSERT INTO \"Order\" VALUES (6, 9, TO_DATE('2023-03-01', 'YYYY-MM-DD'), 105, 1, 59.99*1, 'PayPal', '456 Maple Dr, City');\n" +
-                "INSERT INTO \"Order\" VALUES (7, 3, TO_DATE('2023-08-26', 'YYYY-MM-DD'), 106, 2, 89.99*2, 'Debit Card', '789 Oak St, Cityj');\n" +
-                "INSERT INTO \"Order\" VALUES (8, 3, TO_DATE('2023-01-01', 'YYYY-MM-DD'), 107, 3, 99.99*3, 'Debit Card', '789 Oak St, City');\n" +
-                "INSERT INTO \"Order\" VALUES (9, 4, TO_DATE('2023-09-26', 'YYYY-MM-DD'), 108, 1, 79.99*1, 'PayPal', '321 Pine Dr, City');\n" +
-                "INSERT INTO \"Order\" VALUES (10, 4, TO_DATE('2023-03-01', 'YYYY-MM-DD'), 109, 2, 69.99*2, 'PayPal', '321 Pine Dr, City');\n" +
-                "\n" +
-                "//report\n" +
-                "INSERT INTO report VALUES (DATE '2023-11-29', 1, 1, 'Merchant 1', 101, 19.99, 'Apple', 100);\n" +
-                "INSERT INTO report VALUES (DATE '2023-01-01', 2, 2, 'Merchant 2', 102, 29.99, 'HUWEI', 200);\n" +
-                "INSERT INTO report VALUES (DATE '2023-12-01', 3, 3, 'Merchant 3', 103, 39.99, 'XIAOMI', 300);\n" +
-                "INSERT INTO report VALUES (DATE '2023-03-01', 4, 4, 'Merchant 4', 104, 49.99, 'HUWEI', 400);\n" +
-                "INSERT INTO report VALUES (DATE '2023-04-01', 5, 5, 'Merchant 5', 105, 59.99, 'Apple', 500);\n" +
-                "INSERT INTO report VALUES (DATE '2023-05-01', 6, 1, 'Merchant 6', 106, 69.99, 'XIAOMI', 600);\n" +
-                "INSERT INTO report VALUES (DATE '2023-07-01', 7, 2, 'Merchant 7', 107, 79.99, 'HUWEI', 700);\n" +
-                "INSERT INTO report VALUES (DATE '2023-06-01', 8, 3, 'Merchant 8', 108, 89.99, 'Apple', 800);\n" +
-                "INSERT INTO report VALUES (DATE '2023-09-01', 9, 4, 'Merchant 9', 109, 99.99, 'XIAOMI', 900);\n" +
-                "INSERT INTO report VALUES (DATE '2023-08-01', 10, 5, 'Merchant 10', 110, 109.99, 'HUWEI', 1000);";
+        String create_data = "INSERT INTO Customer VALUES (1, 'John Doe', 12345, '123 Main St, Anytown', 'Credit Card')\n" +
+                "INSERT INTO Customer VALUES (2, 'Jane Smith', 67890, '456 Oak Dr, Somecity', 'Debit Card')\n" +
+                "INSERT INTO Customer VALUES (3, 'Robert Johnson', 11223, '789 Pine Rd, Othertown', 'Paypal')\n" +
+                "INSERT INTO Customer VALUES (4, 'Alice Williams', 44556, '111 Tree St, Cityville', 'Credit Card')\n" +
+                "INSERT INTO Customer VALUES (5, 'Bob Brown', 77889, '222 River Rd, Townville', 'Debit Card')\n" +
+                "INSERT INTO Customer VALUES (6, 'Charlie Davis', 33221, '333 Hill Ln, Villecity', 'Paypal')\n" +
+                "INSERT INTO Customer VALUES (7, 'David Miller', 99331, '444 Peak Pl, Villeton', 'Credit Card')\n" +
+                "INSERT INTO Customer VALUES (8, 'Eva Garcia', 66332, '555 Beach Blvd, Coastown', 'Debit Card')\n" +
+                "INSERT INTO Customer VALUES (9, 'Frank Wilson', 33445, '666 Lake Ln, Laketon', 'Paypal')\n" +
+                "INSERT INTO Customer VALUES (10, 'Grace Martinez', 99884, '777 Star St, Skyville', 'Credit Card')\n" +
+
+                "INSERT INTO Merchant VALUES (1, 'Apple', 101)\n" +
+                "INSERT INTO Merchant VALUES (2, 'Apple', 102)\n" +
+                "INSERT INTO Merchant VALUES (3, 'XIAOMI', 103)\n" +
+                "INSERT INTO Merchant VALUES (4, 'XIOAMI', 104)\n" +
+                "INSERT INTO Merchant VALUES (5, 'HUAWEI', 105)\n" +
+                "INSERT INTO Merchant VALUES (6, 'Apple', 106)\n" +
+                "INSERT INTO Merchant VALUES (7, 'HUAWEI', 107)\n" +
+                "INSERT INTO Merchant VALUES (8, 'XIAOMI', 108)\n" +
+                "INSERT INTO Merchant VALUES (9, 'Apple', 109)\n" +
+                "INSERT INTO Merchant VALUES (10, 'HUAWEI', 110)\n" +
+
+                "INSERT INTO Product VALUES (101, 'phone', 19.99, 1, 1, 'apple', 100, 50\n" +
+                "INSERT INTO Product VALUES (102, 'ipad', 29.99, 2, 2, 'HUWEI', 200, 60)\n" +
+                "INSERT INTO Product VALUES (103, 'computer', 39.99, 3, 2, 'XIAOMI', 150, 70)\n" +
+                "INSERT INTO Product VALUES (104, 'earphone', 49.99, 4, 2, 'apple', 180, 80)\n" +
+                "INSERT INTO Product VALUES (105, 'mouse', 59.99, 2, 5, 'HUWEI', 170, 90)\n" +
+                "INSERT INTO Product VALUES (106, 'phone', 89.99, 3, 6, 'XIAOMI', 120, 30)\n" +
+                "INSERT INTO Product VALUES (107, 'ipad', 99.99, 1, 7, 'HUWEI', 130, 40)\n" +
+                "INSERT INTO Product VALUES (108, 'mouse', 79.99, 2, 8, 'XIAOMI', 140, 50)\n" +
+                "INSERT INTO Product VALUES (109, 'computer', 69.99, 9, 5, 'HUWEI', 150, 60)\n" +
+                "INSERT INTO Product VALUES (110, 'ipad', 59.99, 1, 10, 'apple', 160, 70)\n" +
+
+                "INSERT INTO shopping_cart VALUES (1, 101, 'Phone', 19.99, 2, 19.99*2)\n" +
+                "INSERT INTO shopping_cart VALUES (2, 102, 'HUAWEI', 29.99, 1, 29.99*1)\n" +
+                "INSERT INTO shopping_cart VALUES (3, 103, 'ipad', 39.99, 3, 39.99*3)\n" +
+                "INSERT INTO shopping_cart VALUES (4, 104, 'HUAWEI', 49.99, 2, 49.99*2)\n" +
+                "INSERT INTO shopping_cart VALUES (2, 107, 'ipad', 59.99, 1, 59.99*1)\n" +
+                "INSERT INTO shopping_cart VALUES (6, 101, 'Phone', 19.99, 2, 19.99*2)\n" +
+                "INSERT INTO shopping_cart VALUES (7, 102, 'HUAWEI', 29.99, 1, 29.99*1)\n" +
+                "INSERT INTO shopping_cart VALUES (8, 103, 'ipad', 39.99, 3, 39.99*3)\n" +
+                "INSERT INTO shopping_cart VALUES (6, 104, 'HUAWEI', 49.99, 2, 49.99*2)\n" +
+                "INSERT INTO shopping_cart VALUES (10, 109, 'ipad', 59.99, 1, 59.99*1)\n" +
+
+                "INSERT INTO \"Order\" VALUES (1, 1, TO_DATE('2023-11-01', 'YYYY-MM-DD'), 101, 2, 19.99*2, 'Credit Card', '123 Main St, City')\n" +
+                "INSERT INTO \"Order\" VALUES (2, 1, TO_DATE('2023-10-05', 'YYYY-MM-DD'), 101, 2, 19.99*2, 'Credit Card', '123 Main St, City')\n" +
+                "INSERT INTO \"Order\" VALUES (3, 1, TO_DATE('2023-06-03', 'YYYY-MM-DD'), 102, 1, 29.99*1, 'Credit Card', '123 Main St, City')\n" +
+                "INSERT INTO \"Order\" VALUES (4, 2, TO_DATE('2023-08-01', 'YYYY-MM-DD'), 103, 3, 39.99*3, 'PayPal', '456 Maple Dr, City')\n" +
+                "INSERT INTO \"Order\" VALUES (5, 2, TO_DATE('2023-04-10', 'YYYY-MM-DD'), 104, 2, 49.99*2, 'PayPal', '456 Maple Dr, City')\n" +
+                "INSERT INTO \"Order\" VALUES (6, 9, TO_DATE('2023-03-01', 'YYYY-MM-DD'), 105, 1, 59.99*1, 'PayPal', '456 Maple Dr, City')\n" +
+                "INSERT INTO \"Order\" VALUES (7, 3, TO_DATE('2023-08-26', 'YYYY-MM-DD'), 106, 2, 89.99*2, 'Debit Card', '789 Oak St, Cityj')\n" +
+                "INSERT INTO \"Order\" VALUES (8, 3, TO_DATE('2023-01-01', 'YYYY-MM-DD'), 107, 3, 99.99*3, 'Debit Card', '789 Oak St, City')\n" +
+                "INSERT INTO \"Order\" VALUES (9, 4, TO_DATE('2023-09-26', 'YYYY-MM-DD'), 108, 1, 79.99*1, 'PayPal', '321 Pine Dr, City')\n" +
+                "INSERT INTO \"Order\" VALUES (10, 4, TO_DATE('2023-03-01', 'YYYY-MM-DD'), 109, 2, 69.99*2, 'PayPal', '321 Pine Dr, City')\n" +
+
+                "INSERT INTO report VALUES (DATE '2023-11-29', 1, 1, 'Merchant 1', 101, 19.99, 'Apple', 100)\n" +
+                "INSERT INTO report VALUES (DATE '2023-01-01', 2, 2, 'Merchant 2', 102, 29.99, 'HUWEI', 200)\n" +
+                "INSERT INTO report VALUES (DATE '2023-12-01', 3, 3, 'Merchant 3', 103, 39.99, 'XIAOMI', 300)\n" +
+                "INSERT INTO report VALUES (DATE '2023-03-01', 4, 4, 'Merchant 4', 104, 49.99, 'HUWEI', 400)\n" +
+                "INSERT INTO report VALUES (DATE '2023-04-01', 5, 5, 'Merchant 5', 105, 59.99, 'Apple', 500)\n" +
+                "INSERT INTO report VALUES (DATE '2023-05-01', 6, 1, 'Merchant 6', 106, 69.99, 'XIAOMI', 600)\n" +
+                "INSERT INTO report VALUES (DATE '2023-07-01', 7, 2, 'Merchant 7', 107, 79.99, 'HUWEI', 700)\n" +
+                "INSERT INTO report VALUES (DATE '2023-06-01', 8, 3, 'Merchant 8', 108, 89.99, 'Apple', 800)\n" +
+                "INSERT INTO report VALUES (DATE '2023-09-01', 9, 4, 'Merchant 9', 109, 99.99, 'XIAOMI', 900)\n" +
+                "INSERT INTO report VALUES (DATE '2023-08-01', 10, 5, 'Merchant 10', 110, 109.99, 'HUWEI', 1000)";
 
         Statement insert_data = conn.createStatement();
         ResultSet recieve_data = insert_data.executeQuery(create_data);
