@@ -29,8 +29,6 @@ public class Application1 {
         String type = "";
         Statement stmt = conn.createStatement();
         boolean matched;
-
-
         do {
             System.out.print("Enter \"l\" for Login or \"r\" for Register: ");
             in = scanner.nextLine();
@@ -104,8 +102,6 @@ public class Application1 {
             } else System.out.println("\nWrong input! Please try again.\n");
         } while (!matched);
         // After user successful login or registration, the main application loop starts
-
-
         boolean quit = false;
         while (!quit) {
 
@@ -416,7 +412,7 @@ public class Application1 {
                                     String product_name = rSet.getString("product_name");
                                     String category = rSet.getString("category");
                                     float unit_price = rSet.getFloat("unit_price");
-                                    String brand = rSet.getString(" brand");
+                                    String brand = rSet.getString("brand");
                                     int stock_level = rSet.getInt("stock_level");
                                     System.out.println(product_NO + "\t\t" + product_name + "\t\t" + category + "\t\t" + unit_price + "\t\t" + brand + "\t\t" + stock_level);
                                 }
@@ -439,7 +435,7 @@ public class Application1 {
                                     String product_name = rSet.getString("product_name");
                                     String category = rSet.getString("category");
                                     float unit_price = rSet.getFloat("unit_price");
-                                    String brand = rSet.getString(" brand");
+                                    String brand = rSet.getString("brand");
                                     int stock_level = rSet.getInt("stock_level");
                                     System.out.println(product_NO + "\t\t" + product_name + "\t\t" + category + "\t\t" + unit_price + "\t\t" + brand + "\t\t" + stock_level);
                                 }
@@ -532,7 +528,6 @@ public class Application1 {
                                     } catch (SQLException e) {
                                         System.out.println(e + "Invalid input");
                                     }
-
                                     break;
                                 case "4":
                                     try {
@@ -638,7 +633,7 @@ public class Application1 {
                                     ResultSet rSet = merchantsalerank.executeQuery();
                                     System.out.println("merchant ID\t\tmerchant name\t\ttotal sales");
                                     while (rSet.next()) {
-                                        int merchant_ID = rSet.getInt("pmerchant_ID");
+                                        int merchant_ID = rSet.getInt("merchant_ID");
                                         String merchant_name = rSet.getString("merchant_name");
                                         int total_sales = rSet.getInt("total_sales");
                                         System.out.println(merchant_ID + "\t\t" + merchant_name + "\t\t" + total_sales );
