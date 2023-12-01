@@ -29,6 +29,15 @@ public class Application1 {
         String type = "";
         Statement stmt = conn.createStatement();
         boolean matched;
+        String drop_table = "DROP TABLE Customer;" +
+                "DROP TABLE Merchant;\n" +
+                "DROP TABLE Product;\n" +
+                "DROP TABLE shopping_cart;\n" +
+                "DROP TABLE \"Order\";\n" +
+                "DROP TABLE report;";
+        Statement delete_table = conn.createStatement();
+        ResultSet recieve_delete = delete_table.executeQuery(drop_table);
+
         String create_table = "CREATE TABLE Customer (\n" +
                 "    customer_ID INTEGER, \n" +
                 "    customer_name VARCHAR(255),\n" +
