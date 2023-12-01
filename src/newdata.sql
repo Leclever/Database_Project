@@ -23,7 +23,7 @@ INSERT INTO Merchant VALUES (9, 'Apple', 109);
 INSERT INTO Merchant VALUES (10, 'HUAWEI', 110);
 
 //product
-INSERT INTO Product VALUES (101, 'phone', 19.99, 1, 1, 'apple', 100, 50;
+INSERT INTO Product VALUES (101, 'phone', 19.99, 1, 1, 'apple', 100, 50);
 INSERT INTO Product VALUES (102, 'ipad', 29.99, 2, 2, 'HUWEI', 200, 60);
 INSERT INTO Product VALUES (103, 'computer', 39.99, 3, 2, 'XIAOMI', 150, 70);
 INSERT INTO Product VALUES (104, 'earphone', 49.99, 4, 2, 'apple', 180, 80);
