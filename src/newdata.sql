@@ -4,6 +4,11 @@ INSERT INTO VALUES (2, 'Jane Smith', 67890, '456 Elm St', 'PayPal');
 INSERT INTO VALUES (3, 'Michael Johnson', 54321, '789 Oak St', 'Credit Card');
 INSERT INTO VALUES (4, 'Emily Davis', 98765, '321 Pine St', 'Venmo');
 INSERT INTO VALUES (5, 'David Wilson', 13579, '654 Cedar St', 'PayPal');
+INSERT INTO VALUES (6, 'John Doe', 12345, '123 Main St', 'Credit Card');
+INSERT INTO VALUES (7, 'John Doe', 12345, '123 Main St', 'Credit Card');
+INSERT INTO VALUES (8, 'John Doe', 12345, '123 Main St', 'Credit Card');
+INSERT INTO VALUES (9, 'John Doe', 12345, '123 Main St', 'Credit Card');
+INSERT INTO VALUES (10, 'John Doe', 12345, '123 Main St', 'Credit Card');
 
 Merchant:
 INSERT INTO VALUES (101, 'Merchant A', 1001)
