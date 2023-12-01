@@ -11,16 +11,16 @@ INSERT INTO Customer VALUES (9, 'Frank Wilson', 33445, '666 Lake Ln, Laketon', '
 INSERT INTO Customer VALUES (10, 'Grace Martinez', 99884, '777 Star St, Skyville', 'Credit Card');
 
 // merchant
-INSERT INTO Merchant1 VALUES (1, 'Apple', 101);
-INSERT INTO Merchant1 VALUES (2, 'Apple', 102);
-INSERT INTO Merchant1 VALUES (3, 'XIAOMI', 103);
-INSERT INTO Merchant1 VALUES (4, 'XIOAMI', 104);
-INSERT INTO Merchant1 VALUES (5, 'HUAWEI', 105);
-INSERT INTO Merchant1 VALUES (6, 'Apple', 106);
-INSERT INTO Merchant1 VALUES (7, 'HUAWEI', 107);
-INSERT INTO Merchant1 VALUES (8, 'XIAOMI', 108);
-INSERT INTO Merchant1 VALUES (9, 'Apple', 109);
-INSERT INTO Merchant1 VALUES (10, 'HUAWEI', 110);
+INSERT INTO Merchant VALUES (1, 'Apple', 101);
+INSERT INTO Merchant VALUES (2, 'Apple', 102);
+INSERT INTO Merchant VALUES (3, 'XIAOMI', 103);
+INSERT INTO Merchant VALUES (4, 'XIOAMI', 104);
+INSERT INTO Merchant VALUES (5, 'HUAWEI', 105);
+INSERT INTO Merchant VALUES (6, 'Apple', 106);
+INSERT INTO Merchant VALUES (7, 'HUAWEI', 107);
+INSERT INTO Merchant VALUES (8, 'XIAOMI', 108);
+INSERT INTO Merchant VALUES (9, 'Apple', 109);
+INSERT INTO Merchant VALUES (10, 'HUAWEI', 110);
 
 //product
 INSERT INTO Product VALUES (101, 'phone', 19.99, 1, 1, 'apple', 100, 50;
@@ -47,16 +47,16 @@ INSERT INTO shopping_cart VALUES (6, 104, 'HUAWEI', 49.99, 2, 49.99*2);
 INSERT INTO shopping_cart VALUES (10, 109, 'ipad', 59.99, 1, 59.99*1);
 
 //orders
-INSERT INTO Orders VALUES (1, 1, TO_DATE('2023-11-01', 'YYYY-MM-DD'), 101, 2, 19.99*2, 'Credit Card', '123 Main St, City');
-INSERT INTO Orders VALUES (2, 1, TO_DATE('2023-10-05', 'YYYY-MM-DD'), 101, 2, 19.99*2, 'Credit Card', '123 Main St, City');
-INSERT INTO Orders VALUES (3, 1, TO_DATE('2023-06-03', 'YYYY-MM-DD'), 102, 1, 29.99*1, 'Credit Card', '123 Main St, City');
-INSERT INTO Orders VALUES (4, 2, TO_DATE('2023-08-01', 'YYYY-MM-DD'), 103, 3, 39.99*3, 'PayPal', '456 Maple Dr, City');
-INSERT INTO Orders VALUES (5, 2, TO_DATE('2023-04-10', 'YYYY-MM-DD'), 104, 2, 49.99*2, 'PayPal', '456 Maple Dr, City');
-INSERT INTO Orders VALUES (6, 9, TO_DATE('2023-03-01', 'YYYY-MM-DD'), 105, 1, 59.99*1, 'PayPal', '456 Maple Dr, City');
-INSERT INTO Orders VALUES (7, 3, TO_DATE('2023-08-26', 'YYYY-MM-DD'), 106, 2, 89.99*2, 'Debit Card', '789 Oak St, Cityj');
-INSERT INTO Orders VALUES (8, 3, TO_DATE('2023-01-01', 'YYYY-MM-DD'), 107, 3, 99.99*3, 'Debit Card', '789 Oak St, City');
-INSERT INTO Orders VALUES (9, 4, TO_DATE('2023-09-26', 'YYYY-MM-DD'), 108, 1, 79.99*1, 'PayPal', '321 Pine Dr, City');
-INSERT INTO Orders VALUES (10, 4, TO_DATE('2023-03-01', 'YYYY-MM-DD'), 109, 2, 69.99*2, 'PayPal', '321 Pine Dr, City');
+INSERT INTO "Order" VALUES (1, 1, TO_DATE('2023-11-01', 'YYYY-MM-DD'), 101, 2, 19.99*2, 'Credit Card', '123 Main St, City');
+INSERT INTO "Order" VALUES (2, 1, TO_DATE('2023-10-05', 'YYYY-MM-DD'), 101, 2, 19.99*2, 'Credit Card', '123 Main St, City');
+INSERT INTO "Order" VALUES (3, 1, TO_DATE('2023-06-03', 'YYYY-MM-DD'), 102, 1, 29.99*1, 'Credit Card', '123 Main St, City');
+INSERT INTO "Order" VALUES (4, 2, TO_DATE('2023-08-01', 'YYYY-MM-DD'), 103, 3, 39.99*3, 'PayPal', '456 Maple Dr, City');
+INSERT INTO "Order" VALUES (5, 2, TO_DATE('2023-04-10', 'YYYY-MM-DD'), 104, 2, 49.99*2, 'PayPal', '456 Maple Dr, City');
+INSERT INTO "Order" VALUES (6, 9, TO_DATE('2023-03-01', 'YYYY-MM-DD'), 105, 1, 59.99*1, 'PayPal', '456 Maple Dr, City');
+INSERT INTO "Order" VALUES (7, 3, TO_DATE('2023-08-26', 'YYYY-MM-DD'), 106, 2, 89.99*2, 'Debit Card', '789 Oak St, Cityj');
+INSERT INTO "Order" VALUES (8, 3, TO_DATE('2023-01-01', 'YYYY-MM-DD'), 107, 3, 99.99*3, 'Debit Card', '789 Oak St, City');
+INSERT INTO "Order" VALUES (9, 4, TO_DATE('2023-09-26', 'YYYY-MM-DD'), 108, 1, 79.99*1, 'PayPal', '321 Pine Dr, City');
+INSERT INTO "Order" VALUES (10, 4, TO_DATE('2023-03-01', 'YYYY-MM-DD'), 109, 2, 69.99*2, 'PayPal', '321 Pine Dr, City');
 
 //report
 INSERT INTO report VALUES (DATE '2023-11-29', 1, 1, 'Merchant 1', 101, 19.99, 'Apple', 100);
