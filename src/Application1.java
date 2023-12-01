@@ -394,6 +394,13 @@ public class Application1 {
                         }
                     }
                 case "4":
+                    System.out.println("Are you administrator?  Please typre \"y\" or \"n\".");
+                    String i = scanner.nextLine();
+                    if (i.equals("y")){
+                    }else {
+                        System.out.println("You are not allowed to use this function.");
+                        break;
+                    }
                     System.out.println("Please enter the corresponding number:\n1. View the information of all product inventories\n2. View the inventory of a specific product\n3. Add products\n4. Delete products\n5. Update products' information");
                     String input = scanner.nextLine();
                     switch (input) {
@@ -550,6 +557,13 @@ public class Application1 {
                     }
                     break;
                 case "5":
+                    System.out.println("Are you administrator?  Please typre \"y\" or \"n\".");
+                    String i = scanner.nextLine();
+                    if (i.equals("y")){
+                    }else {
+                        System.out.println("You are not allowed to use this function.");
+                        break;
+                    }
                     System.out.println("Please enter the corresponding number:\n1. Report for product sales data\n2. Report for user behavior");
                     String Input = scanner.nextLine();
                     if (Input.equals("1")){
