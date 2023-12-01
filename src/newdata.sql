@@ -47,7 +47,7 @@ INSERT INTO shopping_cart VALUES (6, 104, 'HUAWEI', 49.99, 2, 49.99*2);
 INSERT INTO shopping_cart VALUES (10, 109, 'ipad', 59.99, 1, 59.99*1);
 
 //orders
-INSERT INTO "Order" VALUES (1, 1, TO_DATE('2023-11-01', 'YYYY-MM-DD'), 101, 2, 19.99*2, 'Credit Card', '123 Main St, City');
+INSERT INTO "Order" VALUES (1, 1, TO_DATE('2023-11-01', 'YYYY-MM-DD'), 100, 2, 19.99*2, 'Credit Card', '123 Main St, City');
 INSERT INTO "Order" VALUES (2, 1, TO_DATE('2023-10-05', 'YYYY-MM-DD'), 101, 2, 19.99*2, 'Credit Card', '123 Main St, City');
 INSERT INTO "Order" VALUES (3, 1, TO_DATE('2023-06-03', 'YYYY-MM-DD'), 102, 1, 29.99*1, 'Credit Card', '123 Main St, City');
 INSERT INTO "Order" VALUES (4, 2, TO_DATE('2023-08-01', 'YYYY-MM-DD'), 103, 3, 39.99*3, 'PayPal', '456 Maple Dr, City');
