@@ -69,4 +69,8 @@ CREATE TABLE Purchase(
     merchant_ID INTEGER
 );
 
+CREATE TABLE Communicate(
+    customer_ID INTEGER,
+    merchant_ID INTEGER
+);
 
