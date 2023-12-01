@@ -394,7 +394,7 @@ public class Application1 {
                         }
                     }
                 case "4":
-                    System.out.println("Are you administrator?  Please typre \"y\" or \"n\".");
+                    System.out.println("Are you administrator?  Please type \"y\" or \"n\".");
                     String i = scanner.nextLine();
                     if (i.equals("y")){
                     }else {
@@ -557,9 +557,9 @@ public class Application1 {
                     }
                     break;
                 case "5":
-                    System.out.println("Are you administrator?  Please typre \"y\" or \"n\".");
-                    String i = scanner.nextLine();
-                    if (i.equals("y")){
+                    System.out.println("Are you administrator?  Please type \"y\" or \"n\".");
+                    String a = scanner.nextLine();
+                    if (a.equals("y")){
                     }else {
                         System.out.println("You are not allowed to use this function.");
                         break;
