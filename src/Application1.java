@@ -1,6 +1,5 @@
 import java.util.Scanner;
 import java.sql.*;
-
 import oracle.jdbc.OracleConnection;
 import oracle.jdbc.driver.OracleDriver;
 
